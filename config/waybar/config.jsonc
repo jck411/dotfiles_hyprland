@@ -1,0 +1,128 @@
+{
+	"layer": "top",
+	"position": "top",
+	"height": 38,
+	"margin": "6 6 0 6",
+	"spacing": 4,
+	
+	"modules-left": ["hyprland/workspaces", "hyprland/window"],
+	"modules-center": ["clock"],
+	"modules-right": ["custom/scratchpad", "pulseaudio", "backlight", "network", "bluetooth", "custom/power-profile", "battery", "tray", "custom/power"],
+	
+	"hyprland/workspaces": {
+		"format": "{id}",
+		"on-click": "activate",
+		"all-outputs": true,
+		"active-only": false
+	},
+	
+	"hyprland/window": {
+		"format": "{}",
+		"max-length": 50,
+		"separate-outputs": true,
+		"on-click": "pkill rofi"
+	},
+	
+	"clock": {
+		"interval": 60,
+		"format": "{:%H:%M}",
+		"format-alt": "{:%A, %B %d, %Y (%H:%M)}",
+		"tooltip-format": "<tt><small>{calendar}</small></tt>",
+		"calendar": {
+			"mode": "month",
+			"format": {
+				"months": "<span color='#88C0D0'><b>{}</b></span>",
+				"days": "<span color='#D8DEE9'>{}</span>",
+				"weekdays": "<span color='#81A1C1'><b>{}</b></span>",
+				"today": "<span color='#BF616A'><b><u>{}</u></b></span>"
+			}
+		}
+	},
+	
+	"pulseaudio": {
+		"format": "{icon} {volume}%",
+		"format-muted": "󰝟 {volume}%",
+		"format-icons": {
+			"default": ["󰕿", "󰖀", "󰕾"]
+		},
+		"on-click": "~/.config/waybar/volume-popup.sh",
+		"on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+		"scroll-step": 5,
+		"tooltip-format": "{desc}"
+	},
+	
+	"backlight": {
+		"format": "{icon} {percent}%",
+		"format-icons": ["", "", "", "", "", "", "", "", ""],
+		"on-click": "~/.config/waybar/brightness-popup.sh",
+		"on-scroll-up": "brightnessctl set +5%",
+		"on-scroll-down": "brightnessctl set 5%-",
+		"tooltip": true,
+		"tooltip-format": "Brightness: {percent}%"
+	},
+	
+	"network": {
+		"format-wifi": "󰤨 {signalStrength}%",
+		"format-ethernet": "󰈀 Connected",
+		"format-disconnected": "󰤭",
+		"tooltip-format": "{essid} ({signalStrength}%)\n{ipaddr}",
+		"tooltip-format-ethernet": "{ifname}: {ipaddr}",
+		"on-click": "~/.config/waybar/wifi-menu.sh"
+	},
+
+	"bluetooth": {
+		"format": "󰂯",
+		"format-connected": "󰂱 {num_connections}",
+		"format-disabled": "󰂲",
+		"format-off": "󰂲",
+		"tooltip-format": "{controller_alias}\n{status}",
+		"tooltip-format-connected": "{controller_alias}\n{num_connections} connected\n\n{device_enumerate}",
+		"tooltip-format-enumerate-connected": "{device_alias}",
+		"tooltip-format-enumerate-connected-battery": "{device_alias} ({device_battery_percentage}%)",
+		"on-click": "~/.config/waybar/bluetooth-menu.sh"
+	},
+	
+	"battery": {
+		"bat": "BAT0",
+		"interval": 60,
+		"states": {
+			"warning": 30,
+			"critical": 15
+		},
+		"format": "{icon} {capacity}%",
+		"format-charging": "󰂄 {capacity}%",
+		"format-plugged": "󰂄 {capacity}%",
+		"format-full": "󰁹 {capacity}%",
+		"format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+		"tooltip-format": "{timeTo}\n{power} W",
+		"on-click": "~/.config/waybar/battery-settings.sh"
+	},
+
+	"custom/power-profile": {
+		"exec": "powerprofilesctl get",
+		"interval": 30,
+		"format": "󰈐 {}",
+		"tooltip": true,
+		"tooltip-format": "Power Profile: {}",
+		"on-click": "~/.config/waybar/power-menu.sh"
+	},
+
+	"tray": {
+		"icon-size": 18,
+		"spacing": 8
+	},
+
+	"custom/power": {
+		"format": "󰐥",
+		"tooltip": true,
+		"tooltip-format": "Power Menu",
+		"on-click": "~/.config/waybar/power-actions.sh"
+	},
+
+	"custom/scratchpad": {
+		"format": "󱂬",
+		"tooltip": true,
+		"tooltip-format": "Toggle Scratchpad",
+		"on-click": "hyprctl dispatch togglespecialworkspace magic"
+	}
+}

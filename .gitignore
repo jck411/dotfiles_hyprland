@@ -1,0 +1,33 @@
+# Dotfiles
+*.log
+*.tmp
+.DS_Store
+
+# Don't track Brave/Code/Cursor - these are app data, not configs
+BraveSoftware/
+Code - Insiders/
+Cursor/
+Electron/
+
+# Cache and generated files
+**/Cache/
+**/CachedData/
+**/GPUCache/
+**/*.pyc
+**/__pycache__/
+
+# Sensitive data
+**/cookies
+**/Cookies
+**/*-journal
+**/session
+pulse/cookie
+rclone/rclone.conf
+
+# Large/dynamic directories
+spicetify/
+spotify/
+yay/
+
+# OS files
+.Trash-*

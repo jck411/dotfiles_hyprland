@@ -1,0 +1,126 @@
+/**
+ * Nord rofi theme
+ * Based on https://github.com/undiabler/nord-rofi-theme
+ * Nord Color palette: https://www.nordtheme.com/
+ */
+
+* {
+    nord0:  #2e3440;
+    nord1:  #3b4252;
+    nord2:  #434c5e;
+    nord3:  #4c566a;
+    nord4:  #d8dee9;
+    nord5:  #e5e9f0;
+    nord6:  #eceff4;
+    nord7:  #8fbcbb;
+    nord8:  #88c0d0;
+    nord9:  #81a1c1;
+    nord10: #5e81ac;
+    nord11: #bf616a;
+    nord12: #d08770;
+    nord13: #ebcb8b;
+    nord14: #a3be8c;
+    nord15: #b48ead;
+
+    foreground:  @nord4;
+    background:  @nord0;
+    accent:      @nord8;
+    urgent:      @nord11;
+
+    background-color: transparent;
+    text-color:       @foreground;
+}
+
+window {
+    location:         center;
+    anchor:           center;
+    width:            400px;
+    border:           2px;
+    border-color:     @nord8;
+    border-radius:    8px;
+    background-color: rgba(46, 52, 64, 0.95);
+    fullscreen:       false;
+}
+
+/* Transparent overlay to capture outside clicks */
+overlay {
+    background-color: transparent;
+}
+
+mainbox {
+    spacing:  0;
+    children: [ inputbar, message, listview ];
+}
+
+inputbar {
+    padding:          12px;
+    background-color: @nord1;
+    border-radius:    6px 6px 0 0;
+    children:         [ prompt, entry ];
+}
+
+prompt {
+    text-color: @nord8;
+    margin:     0 10px 0 0;
+}
+
+entry {
+    text-color:       @nord4;
+    placeholder:      "Search...";
+    placeholder-color: @nord3;
+}
+
+listview {
+    padding:          8px;
+    spacing:          4px;
+    lines:            8;
+    fixed-height:     false;
+    dynamic:          true;
+    background-color: transparent;
+}
+
+element {
+    padding:          10px 12px;
+    border-radius:    6px;
+    background-color: transparent;
+}
+
+element normal.normal {
+    background-color: transparent;
+    text-color:       @nord4;
+}
+
+element selected.normal {
+    background-color: @nord8;
+    text-color:       @nord0;
+}
+
+element alternate.normal {
+    background-color: transparent;
+    text-color:       @nord4;
+}
+
+element-icon {
+    size:             24px;
+    margin:           0 10px 0 0;
+    background-color: inherit;
+}
+
+element-text {
+    background-color: inherit;
+    text-color:       inherit;
+    vertical-align:   0.5;
+}
+
+message {
+    padding:          10px;
+    background-color: @nord2;
+    text-color:       @nord4;
+}
+
+scrollbar {
+    width:            4px;
+    handle-width:     4px;
+    handle-color:     @nord3;
+    background-color: @nord1;
+}

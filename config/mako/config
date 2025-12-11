@@ -1,0 +1,33 @@
+# Mako notification daemon - Nord Theme
+sort=-time
+layer=overlay
+anchor=top-right
+default-timeout=5000
+
+# Font
+font=Sans 11
+
+# Nord Theme Colors
+background-color=#2E3440DD
+text-color=#D8DEE9
+border-color=#88C0D0
+border-size=2
+border-radius=8
+padding=15
+margin=10
+width=350
+height=150
+
+# Urgency-based colors
+[urgency=low]
+background-color=#3B4252DD
+border-color=#81A1C1
+
+[urgency=normal]
+background-color=#2E3440DD
+border-color=#88C0D0
+
+[urgency=high]
+background-color=#2E3440
+border-color=#BF616A
+text-color=#BF616A

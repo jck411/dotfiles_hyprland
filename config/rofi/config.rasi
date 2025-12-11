@@ -1,0 +1,19 @@
+configuration {
+    font:              "CommitMono Nerd Font 11";
+    show-icons:        true;
+    icon-theme:        "Nordzy-dark";
+    display-drun:      "";
+    display-run:       "";
+    display-window:    "";
+    drun-display-format: "{name}";
+    modi:              "drun,run,window";
+    click-to-exit:     true;
+    hover-select:      true;
+    
+    /* Wayland workaround: click outside/empty space to close */
+    me-select-entry:   "";
+    me-accept-entry:   "!MousePrimary";
+    kb-cancel:         "Escape,MousePrimary";
+}
+
+@theme "nord"

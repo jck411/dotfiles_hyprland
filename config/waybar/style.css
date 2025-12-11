@@ -1,0 +1,205 @@
+/* Waybar - Nord Theme */
+
+/* Nord Color Palette */
+@define-color nord0 #2E3440;
+@define-color nord1 #3B4252;
+@define-color nord2 #434C5E;
+@define-color nord3 #4C566A;
+@define-color nord4 #D8DEE9;
+@define-color nord5 #E5E9F0;
+@define-color nord6 #ECEFF4;
+@define-color nord7 #8FBCBB;
+@define-color nord8 #88C0D0;
+@define-color nord9 #81A1C1;
+@define-color nord10 #5E81AC;
+@define-color nord11 #BF616A;
+@define-color nord12 #D08770;
+@define-color nord13 #EBCB8B;
+@define-color nord14 #A3BE8C;
+@define-color nord15 #B48EAD;
+
+* {
+    font-family: "CommitMono Nerd Font", monospace;
+    font-size: 13px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: rgba(46, 52, 64, 0.5);
+    color: @nord4;
+    border-radius: 8px;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+tooltip {
+    background-color: @nord1;
+    border: 2px solid @nord8;
+    border-radius: 8px;
+}
+
+tooltip label {
+    color: @nord4;
+}
+
+#workspaces {
+    margin: 4px 4px;
+}
+
+#workspaces button {
+    color: @nord4;
+    background-color: transparent;
+    border-radius: 6px;
+    margin: 2px 2px;
+    padding: 2px 10px;
+    transition: all 0.2s ease;
+}
+
+#workspaces button.active {
+    background-color: transparent;
+    color: @nord8;
+}
+
+#workspaces button:hover {
+    background-color: transparent;
+    color: @nord7;
+}
+
+#workspaces button.urgent {
+    background-color: @nord11;
+    color: @nord6;
+}
+
+#window {
+    margin: 4px 4px;
+    padding: 2px 10px;
+    color: @nord4;
+    background-color: transparent;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#wireplumber,
+#custom-media,
+#tray,
+#mode,
+#idle_inhibitor,
+#scratchpad,
+#power-profiles-daemon,
+#mpd {
+    padding: 2px 10px;
+    margin: 4px 2px;
+    background-color: transparent;
+    border-radius: 0;
+    color: @nord4;
+}
+
+#clock {
+    background-color: transparent;
+    color: @nord8;
+    font-weight: bold;
+}
+
+#battery {
+    background-color: transparent;
+    color: @nord4;
+}
+
+#battery.charging,
+#battery.plugged {
+    color: @nord14;
+    background-color: transparent;
+}
+
+#battery.critical:not(.charging) {
+    background-color: @nord11;
+    color: @nord6;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#battery.warning:not(.charging) {
+    color: @nord13;
+}
+
+@keyframes blink {
+    to {
+        background-color: @nord0;
+        color: @nord11;
+    }
+}
+
+#pulseaudio {
+    background-color: transparent;
+    color: @nord4;
+}
+
+#pulseaudio.muted {
+    color: @nord3;
+}
+
+#network {
+    background-color: transparent;
+}
+
+#network.disconnected {
+    color: @nord11;
+}
+
+#bluetooth {
+    background-color: transparent;
+}
+
+#bluetooth.connected {
+    color: @nord8;
+}
+
+#bluetooth.disabled,
+#bluetooth.off {
+    color: @nord3;
+}
+
+#backlight {
+    background-color: transparent;
+}
+
+#tray {
+    background-color: transparent;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: @nord11;
+}
+
+#custom-power {
+    background-color: transparent;
+    color: @nord11;
+    padding: 2px 12px;
+    margin: 4px 4px 4px 2px;
+    font-size: 14px;
+}
+
+#custom-power:hover {
+    color: @nord6;
+    background-color: @nord11;
+    border-radius: 6px;
+}
