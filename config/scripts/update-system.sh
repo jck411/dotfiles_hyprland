@@ -24,9 +24,9 @@ yay -Syu --noconfirm
 echo -e "\n=== [2/7] Updating VS Code Insiders extensions ==="
 code-insiders --update-extensions 2>/dev/null || true
 
-# 3. Antigravity (if tarball exists in Downloads)
-echo -e "\n=== [3/7] Checking for Antigravity update ==="
-~/.config/scripts/update-antigravity.sh || true
+# 3. Tarball packages (Antigravity, etc. - reads from profile.json)
+echo -e "\n=== [3/7] Updating tarball packages ==="
+~/.config/scripts/update-tarballs.sh || true
 
 # 4. Clean package cache (keep last 3 versions)
 echo -e "\n=== [4/7] Cleaning package cache ==="
