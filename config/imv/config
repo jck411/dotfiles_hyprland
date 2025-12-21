@@ -1,0 +1,12 @@
+[options]
+background = #2e3440
+
+[binds]
+# Delete current image (move to trash using gio)
+<Delete> = exec gio trash "$imv_current_file"; close
+
+# Alternative: permanently delete (uncomment if preferred)
+# <Delete> = exec rm "$imv_current_file"; close
+
+# Shift+Delete for permanent deletion
+<Shift+Delete> = exec rm "$imv_current_file"; close
