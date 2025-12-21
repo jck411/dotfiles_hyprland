@@ -1,3 +1,3 @@
 
 . "$HOME/.local/bin/env"
-export PATH="/opt/antigravity:$PATH"
+export PATH="/home/human/Antigravity:$PATH"
