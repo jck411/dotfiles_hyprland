@@ -4,25 +4,40 @@
 	"height": 38,
 	"margin": "6 6 0 6",
 	"spacing": 4,
-	
-	"modules-left": ["hyprland/workspaces", "hyprland/window"],
-	"modules-center": ["clock"],
-	"modules-right": ["custom/scratchpad", "pulseaudio", "backlight", "network", "bluetooth", "custom/power-profile", "battery", "tray", "custom/power"],
-	
+	"modules-left": [
+		"hyprland/workspaces",
+		"hyprland/window"
+	],
+	"modules-center": [
+		"clock"
+	],
+	"modules-right": [
+		"custom/svelte",
+		"custom/mcp",
+		"custom/openrouter",
+		"custom/bookmarks",
+		"custom/scratchpad",
+		"pulseaudio",
+		"backlight",
+		"network",
+		"bluetooth",
+		"custom/power-profile",
+		"battery",
+		"tray",
+		"custom/power"
+	],
 	"hyprland/workspaces": {
 		"format": "{id}",
 		"on-click": "activate",
 		"all-outputs": true,
 		"active-only": false
 	},
-	
 	"hyprland/window": {
 		"format": "{}",
 		"max-length": 50,
 		"separate-outputs": true,
 		"on-click": "pkill rofi"
 	},
-	
 	"clock": {
 		"interval": 60,
 		"format": "{:%H:%M}",
@@ -38,29 +53,40 @@
 			}
 		}
 	},
-	
 	"pulseaudio": {
 		"format": "{icon} {volume}%",
 		"format-muted": "󰝟 {volume}%",
 		"format-icons": {
-			"default": ["󰕿", "󰖀", "󰕾"]
+			"default": [
+				"󰕿",
+				"󰖀",
+				"󰕾"
+			]
 		},
 		"on-click": "~/.config/waybar/volume-popup.sh",
 		"on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
 		"scroll-step": 5,
 		"tooltip-format": "{desc}"
 	},
-	
 	"backlight": {
 		"format": "{icon} {percent}%",
-		"format-icons": ["", "", "", "", "", "", "", "", ""],
+		"format-icons": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
 		"on-click": "~/.config/waybar/brightness-popup.sh",
 		"on-scroll-up": "brightnessctl set +5%",
 		"on-scroll-down": "brightnessctl set 5%-",
 		"tooltip": true,
 		"tooltip-format": "Brightness: {percent}%"
 	},
-	
 	"network": {
 		"format-wifi": "󰤨 {signalStrength}%",
 		"format-ethernet": "󰈀 Connected",
@@ -69,7 +95,6 @@
 		"tooltip-format-ethernet": "{ifname}: {ipaddr}",
 		"on-click": "~/.config/waybar/wifi-menu.sh"
 	},
-
 	"bluetooth": {
 		"format": "󰂯",
 		"format-connected": "󰂱 {num_connections}",
@@ -81,7 +106,6 @@
 		"tooltip-format-enumerate-connected-battery": "{device_alias} ({device_battery_percentage}%)",
 		"on-click": "~/.config/waybar/bluetooth-menu.sh"
 	},
-	
 	"battery": {
 		"bat": "BAT0",
 		"interval": 60,
@@ -93,11 +117,21 @@
 		"format-charging": "󰂄 {capacity}%",
 		"format-plugged": "󰂄 {capacity}%",
 		"format-full": "󰁹 {capacity}%",
-		"format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+		"format-icons": [
+			"󰁺",
+			"󰁻",
+			"󰁼",
+			"󰁽",
+			"󰁾",
+			"󰁿",
+			"󰂀",
+			"󰂁",
+			"󰂂",
+			"󰁹"
+		],
 		"tooltip-format": "{timeTo}\n{power} W",
 		"on-click": "~/.config/waybar/battery-settings.sh"
 	},
-
 	"custom/power-profile": {
 		"exec": "powerprofilesctl get",
 		"interval": 30,
@@ -106,23 +140,45 @@
 		"tooltip-format": "Power Profile: {}",
 		"on-click": "~/.config/waybar/power-menu.sh"
 	},
-
 	"tray": {
 		"icon-size": 18,
 		"spacing": 8
 	},
-
 	"custom/power": {
 		"format": "󰐥",
 		"tooltip": true,
 		"tooltip-format": "Power Menu",
 		"on-click": "~/.config/waybar/power-actions.sh"
 	},
-
 	"custom/scratchpad": {
 		"format": "󱂬",
 		"tooltip": true,
 		"tooltip-format": "Toggle Scratchpad",
 		"on-click": "hyprctl dispatch togglespecialworkspace magic"
+	},
+	"custom/bookmarks": {
+		"format": "󰃀",
+		"tooltip": true,
+		"tooltip-format": "Web Apps",
+		"on-click": "~/.config/waybar/bookmarks-menu.sh"
+	},
+	"custom/svelte": {
+		"exec": "~/.config/waybar/svelte-toggle.sh status",
+		"return-type": "json",
+		"interval": 5,
+		"on-click": "~/.config/waybar/svelte-toggle.sh toggle"
+	},
+	"custom/mcp": {
+		"exec": "~/.config/waybar/mcp-toggle.sh status",
+		"return-type": "json",
+		"interval": 5,
+		"on-click": "~/.config/waybar/mcp-toggle.sh toggle",
+		"on-click-right": "~/.config/waybar/mcp-toggle.sh settings"
+	},
+	"custom/openrouter": {
+		"exec": "~/.config/waybar/openrouter-toggle.sh status",
+		"return-type": "json",
+		"interval": 5,
+		"on-click": "~/.config/waybar/openrouter-toggle.sh toggle"
 	}
 }

@@ -36,9 +36,9 @@ env = XDG_SESSION_DESKTOP,Hyprland
 
 # Cursor (scale with display - 24 * 2 = 48 for HiDPI)
 env = XCURSOR_THEME,Nordzy-cursors
-env = XCURSOR_SIZE,40
+env = XCURSOR_SIZE,48
 env = HYPRCURSOR_THEME,Nordzy-cursors
-env = HYPRCURSOR_SIZE,40
+env = HYPRCURSOR_SIZE,48
 
 # GTK Theme
 env = GTK_THEME,Nordic

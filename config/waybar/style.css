@@ -29,7 +29,7 @@
 window#waybar {
     background-color: rgba(46, 52, 64, 0.5);
     color: @nord4;
-    border-radius: 8px;
+    border-radius: 0;
 }
 
 window#waybar.hidden {
@@ -181,11 +181,11 @@ tooltip label {
     background-color: transparent;
 }
 
-#tray > .passive {
+#tray>.passive {
     -gtk-icon-effect: dim;
 }
 
-#tray > .needs-attention {
+#tray>.needs-attention {
     -gtk-icon-effect: highlight;
     background-color: @nord11;
 }
@@ -202,4 +202,72 @@ tooltip label {
     color: @nord6;
     background-color: @nord11;
     border-radius: 6px;
+}
+
+/* Extra gap between Bluetooth and Power profile */
+#custom-power-profile {
+    padding: 2px 10px;
+    margin: 4px 2px 4px 14px;
+}
+
+#custom-scratchpad {
+    padding: 2px 10px;
+    margin: 4px 2px;
+}
+
+/* Bookmarks menu */
+#custom-bookmarks {
+    padding: 2px 10px;
+    margin: 4px 2px;
+    color: @nord4;
+    font-size: 14px;
+}
+
+#custom-bookmarks:hover {
+    color: @nord8;
+}
+
+/* Service toggle widgets (SVG icons) */
+#custom-svelte,
+#custom-mcp,
+#custom-openrouter {
+    padding: 2px 8px;
+    margin: 4px 2px;
+    min-width: 16px;
+    min-height: 16px;
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Running state - green icons */
+#custom-svelte.running {
+    background-image: url("/home/human/.config/waybar/icons/svelte-green.svg");
+}
+
+#custom-mcp.running {
+    background-image: url("/home/human/.config/waybar/icons/mcp-green.svg");
+}
+
+#custom-openrouter.running {
+    background-image: url("/home/human/.config/waybar/icons/openrouter-green.svg");
+}
+
+/* Stopped state - white icons, dimmed */
+#custom-svelte.stopped,
+#custom-mcp.stopped,
+#custom-openrouter.stopped {
+    opacity: 0.7;
+}
+
+#custom-svelte.stopped {
+    background-image: url("/home/human/.config/waybar/icons/svelte-white.svg");
+}
+
+#custom-mcp.stopped {
+    background-image: url("/home/human/.config/waybar/icons/mcp-white.svg");
+}
+
+#custom-openrouter.stopped {
+    background-image: url("/home/human/.config/waybar/icons/openrouter-white.svg");
 }

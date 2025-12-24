@@ -2,7 +2,7 @@
 gtk-theme-name=Nordic
 gtk-icon-theme-name=Nordzy-dark
 gtk-cursor-theme-name=Nordzy-cursors
-gtk-cursor-theme-size=40
+gtk-cursor-theme-size=48
 gtk-application-prefer-dark-theme=true
 gtk-font-name=Sans 11
 gtk-xft-antialias=1
