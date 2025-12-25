@@ -4,6 +4,7 @@
 
 MENU_OPTIONS="ChatGPT
 Gemini
+Google
 Dev Server
 Calendar
 Gmail
@@ -17,6 +18,9 @@ case "$CHOICE" in
         ;;
     "Gemini")
         brave --app=https://gemini.google.com/app --profile-directory=Gemini --disable-extensions --disable-background-networking --disable-sync --no-first-run &
+        ;;
+    "Google")
+        brave --app=https://www.google.com/ --disable-extensions --no-first-run &
         ;;
     "Dev Server")
         brave --app=http://localhost:5173/ --disable-extensions --no-first-run &
