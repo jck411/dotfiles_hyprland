@@ -13,7 +13,6 @@
 	],
 	"modules-right": [
 		"custom/svelte",
-		"custom/mcp",
 		"custom/openrouter",
 		"custom/bookmarks",
 		"custom/scratchpad",
@@ -166,14 +165,8 @@
 		"exec": "~/.config/waybar/svelte-toggle.sh status",
 		"return-type": "json",
 		"interval": 5,
-		"on-click": "~/.config/waybar/svelte-toggle.sh toggle"
-	},
-	"custom/mcp": {
-		"exec": "~/.config/waybar/mcp-toggle.sh status",
-		"return-type": "json",
-		"interval": 5,
-		"on-click": "~/.config/waybar/mcp-toggle.sh toggle",
-		"on-click-right": "~/.config/waybar/mcp-toggle.sh settings"
+		"on-click": "~/.config/waybar/svelte-toggle.sh toggle",
+		"on-click-right": "~/.config/waybar/svelte-toggle.sh open"
 	},
 	"custom/openrouter": {
 		"exec": "~/.config/waybar/openrouter-toggle.sh status",

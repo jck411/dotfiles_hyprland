@@ -271,3 +271,31 @@ tooltip label {
 #custom-openrouter.stopped {
     background-image: url("/home/human/.config/waybar/icons/openrouter-white.svg");
 }
+
+/* Starting state - dimmed green to indicate activity */
+#custom-svelte.starting,
+#custom-openrouter.starting {
+    opacity: 0.6;
+}
+
+#custom-svelte.starting {
+    background-image: url("/home/human/.config/waybar/icons/svelte-green.svg");
+}
+
+#custom-openrouter.starting {
+    background-image: url("/home/human/.config/waybar/icons/openrouter-green.svg");
+}
+
+/* Partial state - slightly dimmed */
+#custom-svelte.partial,
+#custom-openrouter.partial {
+    opacity: 0.85;
+}
+
+#custom-svelte.partial {
+    background-image: url("/home/human/.config/waybar/icons/svelte-green.svg");
+}
+
+#custom-openrouter.partial {
+    background-image: url("/home/human/.config/waybar/icons/openrouter-green.svg");
+}

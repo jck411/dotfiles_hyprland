@@ -9,7 +9,6 @@ CDP_FLAGS="--remote-debugging-port=9222 --force-dark-mode --disable-session-rest
 MENU_OPTIONS="ChatGPT
 Gemini
 Google
-Dev Server
 Calendar
 Gmail
 GitHub Repos"
@@ -25,9 +24,6 @@ case "$CHOICE" in
         ;;
     "Google")
         brave --app=https://www.google.com/ $CDP_FLAGS &
-        ;;
-    "Dev Server")
-        brave --app=http://localhost:5173/ $CDP_FLAGS &
         ;;
     "Calendar")
         brave --app="https://calendar.google.com/calendar/u/0/r?pli=1" $CDP_FLAGS &
