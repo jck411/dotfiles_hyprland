@@ -124,4 +124,6 @@
 ; (gtk_accel_path "<Actions>/ThunarActionManager/sendto-desktop" "")
 ; (gtk_accel_path "<Actions>/ThunarStandardView/make-link" "")
 ; (gtk_accel_path "<Actions>/ThunarWindow/zoom-reset-alt" "<Primary>KP_0")
+; (gtk_accel_path "<Actions>/ThunarBookmarks/56c38f2cb5e22987711422603cf4ff70" "")
 ; (gtk_accel_path "<Actions>/ThunarWindow/about" "")
+; (gtk_accel_path "<Actions>/ThunarBookmarks/d1f21162b8118c1e5e9915a4e941e516" "")

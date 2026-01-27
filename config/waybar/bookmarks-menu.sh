@@ -5,13 +5,13 @@
 # Extensions (Dark Reader) load normally
 
 CDP_FLAGS="--remote-debugging-port=9222 --force-dark-mode --disable-session-restore"
-
 MENU_OPTIONS="ChatGPT
 Gemini
 Google
 Calendar
 Gmail
-GitHub Repos"
+GitHub Repos
+Frontend"
 
 CHOICE=$(echo -e "$MENU_OPTIONS" | rofi -dmenu -i -p "Bookmarks" -theme-str 'window {width: 200px;}')
 
@@ -33,5 +33,8 @@ case "$CHOICE" in
         ;;
     "GitHub Repos")
         brave --app="https://github.com/jck411?tab=repositories" $CDP_FLAGS &
+        ;;
+    "Frontend")
+        brave --app="http://localhost:5173" $CDP_FLAGS &
         ;;
 esac
