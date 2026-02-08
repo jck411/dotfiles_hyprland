@@ -1,8 +1,11 @@
-# Dell XPS 13 — host-specific packages
-# Intel Iris GPU, HiDPI 3200x1800 display, EndeavourOS (Arch)
+# Dell XPS 13 9365 — host-specific packages
+# Intel UHD Graphics 615, HiDPI 3200x1800 display, EndeavourOS (Arch)
 
 # Intel GPU / video acceleration
 intel-ucode
+intel-media-driver
+vulkan-intel
+libva-utils
 
 # Thermal management (Intel thin-and-light)
 thermald
