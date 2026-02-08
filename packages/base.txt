@@ -1,0 +1,181 @@
+# Base packages — required on every machine running this dotfiles setup
+# One package per line. Lines starting with # are comments.
+# AUR packages are marked with # [AUR]
+
+# =============================================================================
+# DESKTOP ENVIRONMENT
+# =============================================================================
+hyprland
+hyprlock
+waybar
+rofi
+mako
+swww
+xdg-desktop-portal-hyprland
+
+# =============================================================================
+# TERMINAL & SHELL
+# =============================================================================
+foot
+bash-completion
+less
+man-db
+man-pages
+
+# =============================================================================
+# FILE MANAGER
+# =============================================================================
+thunar
+thunar-archive-plugin
+thunar-volman
+gvfs
+
+# =============================================================================
+# EDITORS
+# =============================================================================
+visual-studio-code-insiders-bin    # [AUR]
+cursor-bin                         # [AUR]
+nano
+nano-syntax-highlighting
+
+# =============================================================================
+# BROWSERS
+# =============================================================================
+brave-bin                          # [AUR]
+firefox
+
+# =============================================================================
+# MEDIA
+# =============================================================================
+mpv
+imv
+spotify                            # [AUR]
+spicetify-cli                      # [AUR]
+spicetify-themes-git               # [AUR]
+
+# =============================================================================
+# AUDIO / PIPEWIRE
+# =============================================================================
+pipewire-alsa
+pipewire-jack
+pipewire-pulse
+wireplumber
+pavucontrol
+alsa-utils
+alsa-plugins
+alsa-firmware
+
+# =============================================================================
+# NETWORKING
+# =============================================================================
+networkmanager
+network-manager-applet
+networkmanager-dmenu
+networkmanager-openconnect
+networkmanager-openvpn
+nm-connection-editor
+bluez
+bluez-utils
+blueman
+openssh
+wget
+iw
+iwd
+
+# =============================================================================
+# CLIPBOARD & SCREENSHOTS
+# =============================================================================
+wl-clipboard
+cliphist
+grim
+slurp
+swappy
+
+# =============================================================================
+# BRIGHTNESS & POWER
+# =============================================================================
+brightnessctl
+power-profiles-daemon
+upower
+earlyoom
+
+# =============================================================================
+# FONTS
+# =============================================================================
+noto-fonts
+noto-fonts-cjk
+noto-fonts-emoji
+noto-fonts-extra
+otf-commit-mono-nerd
+ttf-bitstream-vera
+ttf-dejavu
+ttf-liberation
+ttf-opensans
+cantarell-fonts
+
+# =============================================================================
+# NORD THEME
+# =============================================================================
+nordic-theme                              # [AUR]
+nordic-darker-theme                       # [AUR]
+nordic-standard-buttons-theme             # [AUR]
+nordic-darker-standard-buttons-theme      # [AUR]
+nordic-bluish-accent-theme                # [AUR]
+nordic-bluish-accent-standard-buttons-theme  # [AUR]
+nordic-polar-standard-buttons-theme       # [AUR]
+nordzy-cursors                            # [AUR]
+nordzy-icon-theme                         # [AUR]
+where-is-my-sddm-theme-git               # [AUR]
+
+# =============================================================================
+# DISPLAY MANAGER
+# =============================================================================
+sddm
+
+# =============================================================================
+# UTILITIES
+# =============================================================================
+git
+github-cli
+jq
+tldr
+pv
+rsync
+rclone
+restic
+unrar
+unzip
+plocate
+inxi
+duf
+glances
+meld
+
+# =============================================================================
+# SYSTEM / BASE
+# =============================================================================
+base
+base-devel
+linux
+linux-firmware
+linux-headers
+python
+nodejs
+npm
+yay
+
+# =============================================================================
+# DISPLAY TOOLS
+# =============================================================================
+mesa-utils
+xorg-server
+xorg-xinput
+xorg-xrandr
+xorg-xdpyinfo
+
+# =============================================================================
+# NOTES
+# =============================================================================
+obsidian
+zathura
+zathura-pdf-mupdf

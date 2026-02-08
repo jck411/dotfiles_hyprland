@@ -56,6 +56,7 @@ extracted into host profiles so the same dotfiles work across different hardware
 |---------|-------------|
 | `default.conf` | Safe fallback for any machine |
 | `dell-xps-13.conf` | Dell XPS 13 — Intel Iris, 3200x1800 HiDPI |
+| `thinkpad-p16s-gen4.conf` | ThinkPad P16s Gen 4 — AMD Ryzen AI 9, Radeon, 1920x1200 |
 
 ## How It Works
 
@@ -120,26 +121,40 @@ yay -S neovim              # 1. Install the app
 git add -A && git commit   # 4. Commit to version control
 ```
 
-## Dependencies
+## Package Management
 
-### Core (required)
+Package lists live in `packages/` — one base list plus per-host extras:
+
+| File | Description |
+|------|-------------|
+| `packages/base.txt` | Apps every machine needs (hyprland, waybar, foot, etc.) |
+| `packages/dell-xps-13.txt` | Intel microcode, thermald, etc. |
+| `packages/thinkpad-p16s-gen4.txt` | AMD microcode, smartcard support, etc. |
+
+Use `packages.sh` to compare declared packages against what's actually installed:
+
 ```bash
-yay -S hyprland waybar foot rofi mako
+./packages.sh                          # Status for current host (auto-detected)
+./packages.sh status dell-xps-13       # Status for specific host
+./packages.sh install                  # Show & optionally install missing packages
+./packages.sh export                   # Dump installed packages to a file
+./packages.sh hosts                    # List available host profiles
 ```
 
-### Utilities (required for full functionality)
-```bash
-yay -S swww grim slurp swappy wl-clipboard cliphist brightnessctl
-```
+### Workflow: Adding a New App
 
-### Fonts & Themes (required for Nord theme)
 ```bash
-yay -S ttf-commit-mono-nerd nordic-theme nordzy-icon-theme nordzy-cursors
-```
+# 1. Add package to the appropriate list
+echo "neovim" >> packages/base.txt
 
-### Optional Apps
-```bash
-yay -S thunar nwg-displays imv mpv networkmanager-dmenu
+# 2. Install it
+./packages.sh install
+
+# 3. Configure it, then track the config
+./sync.sh add nvim
+
+# 4. Commit everything together
+git add -A && git commit -m "Add neovim"
 ```
 
 ## Security

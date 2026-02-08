@@ -1,0 +1,11 @@
+# Dell XPS 13 — host-specific packages
+# Intel Iris GPU, HiDPI 3200x1800 display, EndeavourOS (Arch)
+
+# Intel GPU / video acceleration
+intel-ucode
+
+# Thermal management (Intel thin-and-light)
+thermald
+
+# Google Chrome (secondary browser on this machine)
+google-chrome    # [AUR]
