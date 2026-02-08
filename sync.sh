@@ -27,6 +27,7 @@ IGNORE_LIST=(
     "Cursor"
     "Electron"
     "dconf"
+    "gh"
     "go"
     "pulse"
     "rclone"
