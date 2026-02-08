@@ -5,7 +5,10 @@ Configuration-only dotfiles repo for EndeavourOS (Arch) + Hyprland (Wayland). Ma
 ## Architecture
 
 - `config/` symlinks to `~/.config/<app>`, `shell/` symlinks to `~/`
-- `install.sh` creates symlinks; `sync.sh` adds/removes/checks configs
+- `install.sh` creates symlinks + selects host profile; `sync.sh` adds/removes/checks configs
+- `config/hypr/hosts/` holds per-machine profiles (GPU, monitor, cursor size)
+- `hyprland.conf` sources: `host.conf`, `monitors.conf`, `workspaces.conf`, `quake-rules.conf`
+- Machine-specific values NEVER go in `hyprland.conf` — use host profiles
 - Live config edits automatically reflect in the repo
 
 ## Security

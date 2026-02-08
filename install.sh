@@ -21,17 +21,34 @@ CONFIG_DIRS=(
     "hypr"
     "waybar"
     "foot"
+    "foot-quake"
     "rofi"
     "mako"
     "gtk-3.0"
     "gtk-4.0"
+    "Thunar"
+    "imv"
+    "mpv"
+    "networkmanager-dmenu"
+    "nwg-displays"
+    "xdg-desktop-portal"
     "scripts"
+)
+
+# Standalone config files (symlinked to ~/.config/<file>)
+CONFIG_FILES=(
+    "brave-flags.conf"
+    "code-flags.conf"
+    "cursor-flags.conf"
+    "electron-flags.conf"
+    "power-settings.conf"
 )
 
 # Files in home directory
 HOME_FILES=(
     ".bashrc"
     ".zshrc"
+    ".Xresources"
 )
 
 print_header() {
@@ -85,12 +102,72 @@ install_home_file() {
     create_symlink "$source" "$target"
 }
 
+install_config_file() {
+    local file="$1"
+    local source="$DOTFILES_DIR/config/$file"
+    local target="$CONFIG_DIR/$file"
+    
+    create_symlink "$source" "$target"
+}
+
+select_host() {
+    local hosts_dir="$DOTFILES_DIR/config/hypr/hosts"
+    local host_link="$DOTFILES_DIR/config/hypr/host.conf"
+    
+    if [ ! -d "$hosts_dir" ]; then
+        echo -e "${YELLOW}No host profiles found${NC}"
+        return
+    fi
+    
+    echo -e "${BLUE}Available host profiles:${NC}"
+    local i=1
+    local profiles=()
+    for profile in "$hosts_dir"/*.conf; do
+        [ -f "$profile" ] || continue
+        local name=$(basename "$profile" .conf)
+        profiles+=("$name")
+        local desc=$(head -2 "$profile" | grep "^#" | tail -1 | sed 's/^# *//')
+        echo "  $i) $name${desc:+ - $desc}"
+        ((i++))
+    done
+    
+    if [ ${#profiles[@]} -eq 0 ]; then
+        echo -e "${YELLOW}No host profiles found in $hosts_dir${NC}"
+        return
+    fi
+    
+    echo ""
+    read -p "Select host profile [1-${#profiles[@]}] (default: 1): " choice
+    choice=${choice:-1}
+    
+    if ! [[ "$choice" =~ ^[0-9]+$ ]] || [ "$choice" -lt 1 ] || [ "$choice" -gt ${#profiles[@]} ]; then
+        echo -e "${YELLOW}Invalid choice, using default${NC}"
+        choice=1
+    fi
+    
+    local selected="${profiles[$((choice-1))]}"
+    
+    # Create relative symlink within the repo
+    ln -sf "hosts/${selected}.conf" "$host_link"
+    echo -e "${GREEN}✓ Host profile:${NC} $selected"
+}
+
 install_all() {
     print_header
+    
+    echo -e "${BLUE}Selecting host profile...${NC}"
+    select_host
+    echo ""
     
     echo -e "${BLUE}Installing config directories...${NC}"
     for dir in "${CONFIG_DIRS[@]}"; do
         install_config_dir "$dir"
+    done
+    
+    echo ""
+    echo -e "${BLUE}Installing standalone config files...${NC}"
+    for file in "${CONFIG_FILES[@]}"; do
+        install_config_file "$file"
     done
     
     echo ""
@@ -111,8 +188,11 @@ install_single() {
     local component="$1"
     
     case "$component" in
-        hypr|waybar|foot|rofi|mako|gtk-3.0|gtk-4.0|scripts)
+        hypr|waybar|foot|foot-quake|rofi|mako|gtk-3.0|gtk-4.0|Thunar|imv|mpv|networkmanager-dmenu|nwg-displays|xdg-desktop-portal|scripts)
             install_config_dir "$component"
+            ;;
+        brave-flags.conf|code-flags.conf|cursor-flags.conf|electron-flags.conf|power-settings.conf)
+            install_config_file "$component"
             ;;
         bashrc|.bashrc)
             install_home_file ".bashrc"
@@ -120,13 +200,23 @@ install_single() {
         zshrc|.zshrc)
             install_home_file ".zshrc"
             ;;
+        xresources|.Xresources)
+            install_home_file ".Xresources"
+            ;;
         shell)
-            install_home_file ".bashrc"
-            install_home_file ".zshrc"
+            for file in "${HOME_FILES[@]}"; do
+                install_home_file "$file"
+            done
+            ;;
+        host)
+            select_host
             ;;
         *)
             echo -e "${RED}Unknown component:${NC} $component"
-            echo "Available: hypr, waybar, foot, rofi, mako, gtk-3.0, gtk-4.0, scripts, shell"
+            echo "Available: hypr, waybar, foot, foot-quake, rofi, mako, gtk-3.0, gtk-4.0,"
+            echo "  Thunar, imv, mpv, networkmanager-dmenu, nwg-displays, xdg-desktop-portal,"
+            echo "  scripts, shell, host, brave-flags.conf, code-flags.conf, cursor-flags.conf,"
+            echo "  electron-flags.conf, power-settings.conf"
             exit 1
             ;;
     esac
@@ -143,6 +233,14 @@ backup_only() {
         if [ -e "$target" ] && [ ! -L "$target" ]; then
             echo -e "${YELLOW}Backing up:${NC} $target"
             cp -r "$target" "$BACKUP_DIR/"
+        fi
+    done
+    
+    for file in "${CONFIG_FILES[@]}"; do
+        local target="$CONFIG_DIR/$file"
+        if [ -e "$target" ] && [ ! -L "$target" ]; then
+            echo -e "${YELLOW}Backing up:${NC} $target"
+            cp "$target" "$BACKUP_DIR/"
         fi
     done
     
@@ -164,12 +262,23 @@ show_help() {
     echo "  --backup-only    Only backup existing configs, don't symlink"
     echo "  --help           Show this help message"
     echo ""
-    echo "Components:"
-    echo "  hypr, waybar, foot, rofi, mako, gtk-3.0, gtk-4.0, scripts, shell"
+    echo "Config directories:"
+    echo "  hypr, waybar, foot, foot-quake, rofi, mako, gtk-3.0, gtk-4.0,"
+    echo "  Thunar, imv, mpv, networkmanager-dmenu, nwg-displays,"
+    echo "  xdg-desktop-portal, scripts"
+    echo ""
+    echo "Standalone files:"
+    echo "  brave-flags.conf, code-flags.conf, cursor-flags.conf,"
+    echo "  electron-flags.conf, power-settings.conf"
+    echo ""
+    echo "Other:"
+    echo "  shell            All shell configs (.bashrc, .zshrc, .Xresources)"
+    echo "  host             Select host profile (GPU, monitor, cursor size)"
     echo ""
     echo "Examples:"
-    echo "  ./install.sh              # Install everything"
+    echo "  ./install.sh              # Install everything (with host selection)"
     echo "  ./install.sh hypr         # Install only Hyprland config"
+    echo "  ./install.sh host         # Change host profile"
     echo "  ./install.sh --backup-only"
 }
 

@@ -16,36 +16,46 @@ This repo **only manages configuration files** via symlinks. It does not install
 
 ## What's Included
 
-### Core Configs (installed by `install.sh`)
+### Core Configs
 
 | Component | Description |
 |-----------|-------------|
 | `hypr/` | Hyprland window manager config |
 | `waybar/` | Status bar config, scripts, and styling |
 | `foot/` | Terminal emulator config |
+| `foot-quake/` | Drop-down quake-style terminal |
 | `rofi/` | Application launcher config |
 | `mako/` | Notification daemon config |
 | `gtk-3.0/` | GTK3 theme settings |
 | `gtk-4.0/` | GTK4 theme settings |
-| `scripts/` | System maintenance scripts |
-| `shell/` | Shell configs (.bashrc, .zshrc, .Xresources) |
-
-### Additional Configs (managed via `sync.sh add`)
-
-| Component | Description |
-|-----------|-------------|
-| `foot-quake/` | Drop-down quake-style terminal |
 | `Thunar/` | File manager |
 | `imv/` | Image viewer |
 | `mpv/` | Video player |
 | `networkmanager-dmenu/` | WiFi menu |
 | `nwg-displays/` | Display configuration GUI |
 | `xdg-desktop-portal/` | Wayland portal config |
+| `scripts/` | System maintenance scripts |
+| `shell/` | Shell configs (.bashrc, .zshrc, .Xresources) |
+
+### Standalone Config Files
+
+| File | Description |
+|------|-------------|
 | `brave-flags.conf` | Brave browser Wayland flags |
 | `code-flags.conf` | VS Code Wayland flags |
 | `cursor-flags.conf` | Cursor editor Wayland flags |
 | `electron-flags.conf` | General Electron app flags |
 | `power-settings.conf` | Power management settings |
+
+### Host Profiles (`hypr/hosts/`)
+
+Machine-specific settings (GPU drivers, monitor config, cursor size) are
+extracted into host profiles so the same dotfiles work across different hardware:
+
+| Profile | Description |
+|---------|-------------|
+| `default.conf` | Safe fallback for any machine |
+| `dell-xps-13.conf` | Dell XPS 13 — Intel Iris, 3200x1800 HiDPI |
 
 ## How It Works
 
@@ -59,20 +69,35 @@ Configs are symlinked, not copied. Any changes you make on the live system are a
 
 ## Installation
 
-### Quick Install (symlinks all core configs)
+### Quick Install (symlinks all configs)
 ```bash
 ./install.sh
 ```
+
+During install you'll be prompted to select a host profile for your machine.
 
 ### Install Specific Component
 ```bash
 ./install.sh hypr
 ./install.sh waybar
+./install.sh brave-flags.conf
+```
+
+### Change Host Profile
+```bash
+./install.sh host
 ```
 
 ### Backup Only (no symlinks)
 ```bash
 ./install.sh --backup-only
+```
+
+### Adding a New Machine
+```bash
+cp config/hypr/hosts/default.conf config/hypr/hosts/my-laptop.conf
+# Edit with your GPU, monitor, and cursor settings
+./install.sh host    # Select the new profile
 ```
 
 ## Sync Management
