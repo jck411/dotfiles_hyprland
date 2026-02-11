@@ -35,6 +35,6 @@ case "$CHOICE" in
         brave --app="https://github.com/jck411?tab=repositories" $CDP_FLAGS &
         ;;
     "Frontend")
-        brave --app="http://localhost:5173" $CDP_FLAGS &
+        brave --app="https://192.168.1.111:8000/chat/" $CDP_FLAGS &
         ;;
 esac
