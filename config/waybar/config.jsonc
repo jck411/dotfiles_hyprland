@@ -15,7 +15,7 @@
 		"custom/svelte",
 		"custom/openrouter",
 		"custom/bookmarks",
-		"custom/scratchpad",
+		"custom/obsidian",
 		"pulseaudio",
 		"backlight",
 		"network",
@@ -149,12 +149,6 @@
 		"tooltip-format": "Power Menu",
 		"on-click": "~/.config/waybar/power-actions.sh"
 	},
-	"custom/scratchpad": {
-		"format": "󱂬",
-		"tooltip": true,
-		"tooltip-format": "Toggle Scratchpad",
-		"on-click": "hyprctl dispatch togglespecialworkspace magic"
-	},
 	"custom/bookmarks": {
 		"format": "󰃀",
 		"tooltip": true,
@@ -173,5 +167,11 @@
 		"return-type": "json",
 		"interval": 5,
 		"on-click": "~/.config/waybar/openrouter-toggle.sh toggle"
+	},
+	"custom/obsidian": {
+		"format": "󱓧",
+		"tooltip": true,
+		"tooltip-format": "New Obsidian Note",
+		"on-click": "~/.config/waybar/obsidian-note.sh"
 	}
 }
