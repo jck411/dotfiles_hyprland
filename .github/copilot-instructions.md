@@ -2,6 +2,13 @@
 
 Configuration-only dotfiles repo for EndeavourOS (Arch) + Hyprland (Wayland). Manages configs via symlinks — does NOT install packages or manage dependencies.
 
+## Core Operating Principles
+
+- **Zero legacy leftovers** — remove `.bak` files, stale configs, orphaned symlinks, and unused package entries; never leave dead files behind
+- **Package lists and configs stay in sync** — always update both together in one commit; a package entry without config (or vice versa) is a bug
+- **Docs must stay current** — keep `README` and instructions accurate; no duplicate or stale documentation
+- **Protect sensitive files** — never track credentials, tokens, browser profiles, app data, or Electron caches
+
 ## Architecture
 
 - Machine repos (`machine-dell-xps13`, etc.) are the entry points — this repo is edited from there
@@ -30,6 +37,15 @@ Configuration-only dotfiles repo for EndeavourOS (Arch) + Hyprland (Wayland). Ma
 
 - Never track credentials: `gh/`, `rclone/`, anything with tokens or API keys
 - Never track app data or Electron caches: browser profiles, `obsidian/`, IndexedDB dirs
+
+## After Change Checklist
+
+Every meaningful change must satisfy:
+- [ ] No `.bak` files, dead configs, or stale symlinks left behind
+- [ ] Package list updated alongside any config change (keep in sync)
+- [ ] Run `sync.sh status` to verify symlink health
+- [ ] `.gitignore` updated for any new sensitive or local artifacts
+- [ ] Committed and pushed
 
 ## Shell Scripts
 
