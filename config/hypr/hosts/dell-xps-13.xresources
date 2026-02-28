@@ -1,0 +1,4 @@
+! HiDPI overrides for Dell XPS 13 (3200x1800 @ scale 2)
+! DPI = 96 * 2 = 192
+Xft.dpi: 192
+Xcursor.size: 48

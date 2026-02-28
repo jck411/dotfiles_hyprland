@@ -1,20 +1,19 @@
 # ThinkPad P16s Gen 4 AMD — host-specific packages
-# AMD Ryzen AI 9 HX PRO 370, Integrated Radeon, 1920x1200, Fedora→Arch
-#
-# NOTE: This machine ships with Fedora. If converting to EndeavourOS/Arch,
-# these are the Arch package names. Adjust if staying on Fedora (dnf).
+# AMD Ryzen AI 9 HX PRO 370, Integrated Radeon 880M, 1920x1200
 
-# AMD GPU / video acceleration
+# AMD CPU microcode
 amd-ucode
 
-# Power management (AMD mobile — power-profiles-daemon is in base)
-# tlp and power-profiles-daemon conflict; pick one per host
-# tlp
-# tlp-rdw
+# AMD GPU / video acceleration
+vulkan-radeon
+libva-mesa-driver
 
 # Wi-Fi firmware (MediaTek Wi-Fi 7 MT7925)
-# Should be covered by linux-firmware, but if not:
+# Covered by linux-firmware; uncomment if firmware missing after install:
 # linux-firmware-mediatek
+
+# NVMe health monitoring (1 TB Gen4 TLC Opal)
+smartmontools
 
 # Smartcard support (hardware has smart card reader)
 ccid
