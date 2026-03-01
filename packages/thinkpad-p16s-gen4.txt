@@ -6,7 +6,7 @@ amd-ucode
 
 # AMD GPU / video acceleration
 vulkan-radeon
-libva-mesa-driver
+# libva-mesa-driver  # merged into mesa since mesa 23.1 — no separate package
 
 # Wi-Fi firmware (MediaTek Wi-Fi 7 MT7925)
 # Covered by linux-firmware; uncomment if firmware missing after install:
