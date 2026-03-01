@@ -13,6 +13,7 @@ mako
 swww
 xdg-desktop-portal-hyprland
 nwg-displays
+socat
 
 # =============================================================================
 # TERMINAL & SHELL
