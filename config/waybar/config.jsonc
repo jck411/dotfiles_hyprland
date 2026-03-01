@@ -3,7 +3,7 @@
 	"position": "top",
 	"height": 38,
 	"margin": "6 6 0 6",
-	"spacing": 4,
+	"spacing": 8,
 	"modules-left": [
 		"hyprland/workspaces",
 		"hyprland/window"
