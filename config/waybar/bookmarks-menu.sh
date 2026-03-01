@@ -11,7 +11,12 @@ Google
 Calendar
 Gmail
 GitHub Repos
-Frontend"
+Frontend
+Jacks Home
+Chat (jackshome)
+Calendar (jackshome)
+chat-local
+calendar-local"
 
 CHOICE=$(echo -e "$MENU_OPTIONS" | rofi -dmenu -i -p "Bookmarks" -theme waybar)
 
@@ -36,5 +41,20 @@ case "$CHOICE" in
         ;;
     "Frontend")
         brave --app="https://192.168.1.111:8000/chat/" $CDP_FLAGS &
+        ;;
+    "Jacks Home")
+        brave --app="https://jackshome.com" $CDP_FLAGS &
+        ;;
+    "Chat (jackshome)")
+        brave --app="https://chat.jackshome.com/" $CDP_FLAGS &
+        ;;
+    "Calendar (jackshome)")
+        brave --app="https://calendar.jackshome.com/" $CDP_FLAGS &
+        ;;
+    "chat-local")
+        brave --app="https://192.168.1.111:8000/" $CDP_FLAGS &
+        ;;
+    "calendar-local")
+        brave --app="http://192.168.1.112/" $CDP_FLAGS &
         ;;
 esac
