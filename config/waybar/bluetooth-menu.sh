@@ -186,8 +186,8 @@ show_menu() {
         options+="󰂲  Disable Bluetooth\n"
         options+="─────────────\n"
         
-        # List paired devices
-        paired=$(bluetoothctl devices Paired 2>/dev/null)
+        # Only grab lines that are actual device entries (filter out GATT noise)
+        paired=$(bluetoothctl devices Paired 2>/dev/null | grep -E '^Device ([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2} ')
         
         if [[ -n "$paired" ]]; then
             while read -r line; do
@@ -222,8 +222,7 @@ show_menu() {
         *"Enable Bluetooth"*) toggle_power ;;
         *"Scan for Devices"*) scan_devices ;;
         *"Remove Device"*)
-            # Show device list for removal
-            paired=$(bluetoothctl devices Paired 2>/dev/null)
+            paired=$(bluetoothctl devices Paired 2>/dev/null | grep -E '^Device ([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2} ')
             device_list=""
             while read -r line; do
                 [[ -z "$line" ]] && continue
@@ -241,17 +240,15 @@ show_menu() {
             fi
             ;;
         *"(connected)"*)
-            # Already connected - offer disconnect
             name=$(echo "$selected" | sed 's/^[^ ]* *//' | sed 's/ (connected).*//')
-            mac=$(bluetoothctl devices Paired | grep "$name" | awk '{print $2}')
+            mac=$(bluetoothctl devices Paired 2>/dev/null | grep -E '^Device ' | grep "$name" | awk '{print $2}')
             
             action=$(echo -e "Disconnect\nCancel" | rofi -dmenu -i -p "$name" -theme-str 'window {width: 200px;}')
             [[ "$action" == "Disconnect" ]] && disconnect_device "$mac"
             ;;
         *)
-            # Connect to device
             name=$(echo "$selected" | sed 's/^[^ ]* *//')
-            mac=$(bluetoothctl devices Paired | grep "$name" | awk '{print $2}')
+            mac=$(bluetoothctl devices Paired 2>/dev/null | grep -E '^Device ' | grep "$name" | awk '{print $2}')
             [[ -n "$mac" ]] && connect_device "$mac"
             ;;
     esac
