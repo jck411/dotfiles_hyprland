@@ -12,6 +12,7 @@ rofi
 mako
 swww
 xdg-desktop-portal-hyprland
+nwg-displays
 
 # =============================================================================
 # TERMINAL & SHELL
