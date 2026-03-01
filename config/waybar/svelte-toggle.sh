@@ -3,7 +3,7 @@
 # Click: Toggle MCP Servers + Frontend together
 # Right-click: Open frontend in browser
 
-PROJECT_DIR="/home/human/REPOS/Backend_FastAPI"
+PROJECT_DIR="$HOME/REPOS/Backend_FastAPI"
 FRONTEND_DIR="$PROJECT_DIR/frontend"
 STATE_FILE="$HOME/.cache/ai-stack.state"
 

@@ -248,15 +248,15 @@ tooltip label {
 
 /* Running state - green icons */
 #custom-svelte.running {
-    background-image: url("/home/human/.config/waybar/icons/svelte-green.svg");
+    background-image: url("/home/jack/.config/waybar/icons/svelte-green.svg");
 }
 
 #custom-mcp.running {
-    background-image: url("/home/human/.config/waybar/icons/mcp-green.svg");
+    background-image: url("/home/jack/.config/waybar/icons/mcp-green.svg");
 }
 
 #custom-openrouter.running {
-    background-image: url("/home/human/.config/waybar/icons/openrouter-green.svg");
+    background-image: url("/home/jack/.config/waybar/icons/openrouter-green.svg");
 }
 
 /* Stopped state - white icons, dimmed */
@@ -267,15 +267,15 @@ tooltip label {
 }
 
 #custom-svelte.stopped {
-    background-image: url("/home/human/.config/waybar/icons/svelte-white.svg");
+    background-image: url("/home/jack/.config/waybar/icons/svelte-white.svg");
 }
 
 #custom-mcp.stopped {
-    background-image: url("/home/human/.config/waybar/icons/mcp-white.svg");
+    background-image: url("/home/jack/.config/waybar/icons/mcp-white.svg");
 }
 
 #custom-openrouter.stopped {
-    background-image: url("/home/human/.config/waybar/icons/openrouter-white.svg");
+    background-image: url("/home/jack/.config/waybar/icons/openrouter-white.svg");
 }
 
 /* Starting state - dimmed green to indicate activity */
@@ -285,11 +285,11 @@ tooltip label {
 }
 
 #custom-svelte.starting {
-    background-image: url("/home/human/.config/waybar/icons/svelte-green.svg");
+    background-image: url("/home/jack/.config/waybar/icons/svelte-green.svg");
 }
 
 #custom-openrouter.starting {
-    background-image: url("/home/human/.config/waybar/icons/openrouter-green.svg");
+    background-image: url("/home/jack/.config/waybar/icons/openrouter-green.svg");
 }
 
 /* Partial state - slightly dimmed */
@@ -299,9 +299,9 @@ tooltip label {
 }
 
 #custom-svelte.partial {
-    background-image: url("/home/human/.config/waybar/icons/svelte-green.svg");
+    background-image: url("/home/jack/.config/waybar/icons/svelte-green.svg");
 }
 
 #custom-openrouter.partial {
-    background-image: url("/home/human/.config/waybar/icons/openrouter-green.svg");
+    background-image: url("/home/jack/.config/waybar/icons/openrouter-green.svg");
 }

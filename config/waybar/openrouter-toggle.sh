@@ -2,7 +2,7 @@
 # Backend Toggle for Waybar (matches start.sh option 1)
 # Click: Toggle backend on/off
 
-BACKEND_DIR="/home/human/REPOS/Backend_FastAPI"
+BACKEND_DIR="$HOME/REPOS/Backend_FastAPI"
 HEALTH_URL="http://localhost:8000/health"
 STATE_FILE="$HOME/.cache/backend.state"
 
