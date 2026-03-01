@@ -3,7 +3,7 @@
 
 options="󰌾  Lock\n󰒲  Suspend\n󰍃  Logout\n󰜉  Reboot\n󰐥  Power Off"
 
-selected=$(echo -e "$options" | rofi -dmenu -i -p "Power" -theme-str 'window {width: 200px;} listview {lines: 5;}')
+selected=$(echo -e "$options" | rofi -dmenu -i -p "Power" -theme waybar -theme-str 'listview {lines: 5;}')
 
 case "$selected" in
     "󰌾  Lock")

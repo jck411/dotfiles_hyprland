@@ -17,7 +17,7 @@ options="󰕾  100%
 󰝟  Mute/Unmute
   Audio Settings"
 
-selected=$(echo -e "$options" | rofi -dmenu -i -p "Vol: $status")
+selected=$(echo -e "$options" | rofi -dmenu -i -p "Vol: $status" -theme waybar)
 
 case "$selected" in
     *"100%"*)

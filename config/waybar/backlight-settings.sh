@@ -14,7 +14,7 @@ show_dialog() {
     
     options="Current: ${current}%\n─────────────\n100%\n75%\n50%\n25%\n10%"
     
-    selected=$(echo -e "$options" | rofi -dmenu -i -p "Brightness" -theme-str 'window {width: 200px;}')
+    selected=$(echo -e "$options" | rofi -dmenu -i -p "Brightness" -theme waybar)
     
     case "$selected" in
         "100%"|"75%"|"50%"|"25%"|"10%")

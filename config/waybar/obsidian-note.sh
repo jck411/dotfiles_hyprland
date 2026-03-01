@@ -11,12 +11,12 @@ NOTES=$(find "$VAULT_PATH" -maxdepth 1 -name '*.md' -printf '%f\n' | sed 's/\.md
 # Build menu: "New Note" first, then existing notes
 MENU=$(printf "+ New Note\n%s" "$NOTES")
 
-CHOICE=$(echo "$MENU" | rofi -dmenu -i -p "Obsidian" -theme-str 'window {width: 320px;}')
+CHOICE=$(echo "$MENU" | rofi -dmenu -i -p "Obsidian" -theme waybar)
 
 [ -z "$CHOICE" ] && exit 0
 
 if [ "$CHOICE" = "+ New Note" ]; then
-    TITLE=$(rofi -dmenu -p "Title" -l 0 -theme-str 'window {width: 320px;}')
+    TITLE=$(rofi -dmenu -p "Title" -l 0 -theme waybar)
     [ -z "$TITLE" ] && exit 0
     ENCODED=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$TITLE")
     xdg-open "obsidian://new?vault=${VAULT}&name=${ENCODED}" &

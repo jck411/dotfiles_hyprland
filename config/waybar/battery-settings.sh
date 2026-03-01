@@ -50,7 +50,7 @@ show_dialog() {
     
     selected=$(printf "%s\n%s" "$opt_limited" "$opt_full" | rofi -dmenu -i \
         -p "Battery: ${capacity}% • ${status}" \
-        -theme-str 'window {width: 280px;}')
+        -theme waybar)
     
     case "$selected" in
         *"60-80%"*)

@@ -1,0 +1,9 @@
+/**
+ * Waybar menus — inherits Nord theme, auto-sizes window to fit content.
+ */
+@import "nord"
+
+window {
+    width:     max-content;
+    min-width: 280px;
+}

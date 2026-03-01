@@ -96,7 +96,7 @@ remove_device() {
     local name=$(get_device_name "$mac")
     
     # Confirm removal
-    confirm=$(echo -e "Yes\nNo" | rofi -dmenu -i -p "Forget $name?" -theme-str 'window {width: 250px;}')
+    confirm=$(echo -e "Yes\nNo" | rofi -dmenu -i -p "Forget $name?" -theme waybar)
     
     if [[ "$confirm" == "Yes" ]]; then
         bluetoothctl remove "$mac" && \
@@ -148,7 +148,7 @@ show_menu() {
         options+="󰂯  Enable Bluetooth"
     fi
     
-    selected=$(echo -e "$options" | rofi -dmenu -i -p "Bluetooth" -theme-str 'window {width: 320px;}')
+    selected=$(echo -e "$options" | rofi -dmenu -i -p "Bluetooth" -theme waybar)
     
     [[ -z "$selected" ]] && exit 0
     
@@ -167,7 +167,7 @@ show_menu() {
             done <<< "$paired"
             
             if [[ -n "$device_list" ]]; then
-                sel=$(echo -e "$device_list" | rofi -dmenu -i -p "Remove" -theme-str 'window {width: 300px;}')
+                sel=$(echo -e "$device_list" | rofi -dmenu -i -p "Remove" -theme waybar)
                 if [[ -n "$sel" ]]; then
                     mac=$(echo "$sel" | awk '{print $1}')
                     remove_device "$mac"
@@ -178,7 +178,7 @@ show_menu() {
             name=$(echo "$selected" | sed 's/^[^ ]* *//' | sed 's/ (connected).*//')
             mac=$(bluetoothctl devices Paired 2>/dev/null | grep -E '^Device ' | grep "$name" | awk '{print $2}')
             
-            action=$(echo -e "Disconnect\nCancel" | rofi -dmenu -i -p "$name" -theme-str 'window {width: 200px;}')
+            action=$(echo -e "Disconnect\nCancel" | rofi -dmenu -i -p "$name" -theme waybar)
             [[ "$action" == "Disconnect" ]] && disconnect_device "$mac"
             ;;
         *)

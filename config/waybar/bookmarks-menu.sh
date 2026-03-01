@@ -13,7 +13,7 @@ Gmail
 GitHub Repos
 Frontend"
 
-CHOICE=$(echo -e "$MENU_OPTIONS" | rofi -dmenu -i -p "Bookmarks" -theme-str 'window {width: 200px;}')
+CHOICE=$(echo -e "$MENU_OPTIONS" | rofi -dmenu -i -p "Bookmarks" -theme waybar)
 
 case "$CHOICE" in
     "ChatGPT")

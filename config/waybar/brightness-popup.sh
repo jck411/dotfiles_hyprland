@@ -9,7 +9,7 @@ options="100%
 25%
 10%"
 
-selected=$(echo -e "$options" | rofi -dmenu -i -p "Brightness: ${current}%" -theme-str 'window {width: 200px;}')
+selected=$(echo -e "$options" | rofi -dmenu -i -p "Brightness: ${current}%" -theme waybar)
 
 if [ -n "$selected" ]; then
     brightnessctl set "${selected}"

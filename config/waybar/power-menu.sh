@@ -60,7 +60,7 @@ show_dialog() {
     done
     options+="─────────────\nAdvanced"
 
-    selected=$(echo -e "$options" | rofi -dmenu -i -p "Power Profile" -theme-str 'window {width: 280px;}')
+    selected=$(echo -e "$options" | rofi -dmenu -i -p "Power Profile" -theme waybar)
 
     if [ -n "$selected" ]; then
         case "$selected" in

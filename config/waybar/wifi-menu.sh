@@ -44,7 +44,7 @@ connect_network() {
             notify-send "WiFi" "Failed to connect to $ssid" -i network-wireless-offline
     else
         # Need password - use rofi to get it
-        password=$(rofi -dmenu -password -p "Password for $ssid" -theme-str 'window {width: 350px;} listview {lines: 0;}')
+        password=$(rofi -dmenu -password -p "Password for $ssid" -theme waybar -theme-str 'listview {lines: 0;}')
         if [[ -n "$password" ]]; then
             nmcli device wifi connect "$ssid" password "$password" && \
                 notify-send "WiFi" "Connected to $ssid" -i network-wireless || \
@@ -72,7 +72,7 @@ forget_network() {
         return
     fi
     
-    selected=$(echo "$saved" | rofi -dmenu -i -p "Forget Network" -theme-str 'window {width: 300px;}')
+    selected=$(echo "$saved" | rofi -dmenu -i -p "Forget Network" -theme waybar)
     
     if [[ -n "$selected" ]]; then
         nmcli connection delete "$selected" && \
@@ -134,7 +134,7 @@ show_menu() {
         options+="󰤨  Enable WiFi"
     fi
     
-    selected=$(echo -e "$options" | rofi -dmenu -i -p "WiFi" -theme-str 'window {width: 320px;}')
+    selected=$(echo -e "$options" | rofi -dmenu -i -p "WiFi" -theme waybar)
     
     [[ -z "$selected" ]] && exit 0
     

@@ -20,7 +20,7 @@ show_dialog() {
     
     options="Volume: ${volume}%\n─────────────\n${unmute_opt}\n${mute_opt}\n─────────────\nOpen Mixer"
     
-    selected=$(echo -e "$options" | rofi -dmenu -i -p "Audio" -theme-str 'window {width: 250px;}')
+    selected=$(echo -e "$options" | rofi -dmenu -i -p "Audio" -theme waybar)
     
     case "$selected" in
         *"Mute"*|*"Unmute"*)
