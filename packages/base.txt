@@ -35,6 +35,7 @@ gvfs
 # =============================================================================
 # EDITORS
 # =============================================================================
+mousepad
 visual-studio-code-insiders-bin    # [AUR]
 cursor-bin                         # [AUR]
 # antigravity                      # [MANUAL] tarball from antigravity.google — installed to /opt/Antigravity/
