@@ -12,8 +12,6 @@
 		"clock"
 	],
 	"modules-right": [
-		"custom/svelte",
-		"custom/openrouter",
 		"custom/bookmarks",
 		"custom/obsidian",
 		"pulseaudio",
@@ -154,19 +152,6 @@
 		"tooltip": true,
 		"tooltip-format": "Web Apps",
 		"on-click": "~/.config/waybar/bookmarks-menu.sh"
-	},
-	"custom/svelte": {
-		"exec": "~/.config/waybar/svelte-toggle.sh status",
-		"return-type": "json",
-		"interval": 5,
-		"on-click": "~/.config/waybar/svelte-toggle.sh toggle",
-		"on-click-right": "~/.config/waybar/svelte-toggle.sh open"
-	},
-	"custom/openrouter": {
-		"exec": "~/.config/waybar/openrouter-toggle.sh status",
-		"return-type": "json",
-		"interval": 5,
-		"on-click": "~/.config/waybar/openrouter-toggle.sh toggle"
 	},
 	"custom/obsidian": {
 		"format": "󱓧",

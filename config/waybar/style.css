@@ -234,9 +234,7 @@ tooltip label {
 }
 
 /* Service toggle widgets (SVG icons) */
-#custom-svelte,
-#custom-mcp,
-#custom-openrouter {
+#custom-mcp {
     padding: 2px 8px;
     margin: 4px 2px;
     min-width: 16px;
@@ -247,61 +245,16 @@ tooltip label {
 }
 
 /* Running state - green icons */
-#custom-svelte.running {
-    background-image: url("/home/jack/.config/waybar/icons/svelte-green.svg");
-}
-
 #custom-mcp.running {
     background-image: url("/home/jack/.config/waybar/icons/mcp-green.svg");
 }
 
-#custom-openrouter.running {
-    background-image: url("/home/jack/.config/waybar/icons/openrouter-green.svg");
-}
-
 /* Stopped state - white icons, dimmed */
-#custom-svelte.stopped,
-#custom-mcp.stopped,
-#custom-openrouter.stopped {
+#custom-mcp.stopped {
     opacity: 0.7;
-}
-
-#custom-svelte.stopped {
-    background-image: url("/home/jack/.config/waybar/icons/svelte-white.svg");
 }
 
 #custom-mcp.stopped {
     background-image: url("/home/jack/.config/waybar/icons/mcp-white.svg");
 }
 
-#custom-openrouter.stopped {
-    background-image: url("/home/jack/.config/waybar/icons/openrouter-white.svg");
-}
-
-/* Starting state - dimmed green to indicate activity */
-#custom-svelte.starting,
-#custom-openrouter.starting {
-    opacity: 0.6;
-}
-
-#custom-svelte.starting {
-    background-image: url("/home/jack/.config/waybar/icons/svelte-green.svg");
-}
-
-#custom-openrouter.starting {
-    background-image: url("/home/jack/.config/waybar/icons/openrouter-green.svg");
-}
-
-/* Partial state - slightly dimmed */
-#custom-svelte.partial,
-#custom-openrouter.partial {
-    opacity: 0.85;
-}
-
-#custom-svelte.partial {
-    background-image: url("/home/jack/.config/waybar/icons/svelte-green.svg");
-}
-
-#custom-openrouter.partial {
-    background-image: url("/home/jack/.config/waybar/icons/openrouter-green.svg");
-}
