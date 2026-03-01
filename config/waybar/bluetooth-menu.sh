@@ -105,75 +105,10 @@ remove_device() {
     fi
 }
 
-# Scan for new devices
+# Scan for new devices — delegates to Blueman which handles BR/EDR discovery correctly
 scan_devices() {
-    notify-send "Bluetooth" "Scanning for 10 seconds..." -i bluetooth-active -t 10000
-
-    local tmp; tmp=$(mktemp)
-
-    # Parse the live scan event stream — capturing both initial discovery and
-    # name resolutions (which arrive as [CHG] Name: lines after initial [NEW]
-    # Device lines, especially for BLE devices).
-    timeout 10 bluetoothctl scan on 2>/dev/null | while IFS= read -r line; do
-        # [NEW] Device AA:BB:CC:DD:EE:FF DeviceName
-        if [[ "$line" =~ ^\[NEW\]\ Device\ ([0-9A-Fa-f:]{17})\ (.+)$ ]]; then
-            echo "${BASH_REMATCH[1]} ${BASH_REMATCH[2]}"
-        # [CHG] Device AA:BB:CC:DD:EE:FF Name: ResolvedName
-        elif [[ "$line" =~ ^\[CHG\]\ Device\ ([0-9A-Fa-f:]{17})\ Name:\ (.+)$ ]]; then
-            echo "${BASH_REMATCH[1]} ${BASH_REMATCH[2]}"
-        fi
-    done > "$tmp"
-
-    bluetoothctl scan off &>/dev/null 2>&1
-
-    # Also include anything already cached that had its name resolved
-    bluetoothctl devices 2>/dev/null | grep "^Device " | while read -r _ mac name_rest; do
-        [[ -n "$name_rest" ]] && echo "$mac $name_rest"
-    done >> "$tmp"
-
-    paired_macs=$(bluetoothctl devices Paired 2>/dev/null | awk '{print $2}')
-
-    # Build deduplicated map — later entries (name resolutions) overwrite earlier
-    # MAC-as-name placeholders, so we always show the best resolved name.
-    declare -A device_names
-    while read -r mac name_rest; do
-        [[ -z "$mac" || -z "$name_rest" ]] && continue
-        # Skip already paired
-        echo "$paired_macs" | grep -qx "$mac" && continue
-        # Skip entries where the "name" is still just a MAC-formatted string
-        [[ "$name_rest" =~ ^[0-9A-Fa-f]{2}[:-] ]] && continue
-        device_names[$mac]="$name_rest"
-    done < "$tmp"
-    rm -f "$tmp"
-
-    local options=""
-    for mac in "${!device_names[@]}"; do
-        icon=$(get_device_icon "$mac")
-        options+="$mac  $icon ${device_names[$mac]}\n"
-    done
-
-    if [[ -z "$options" ]]; then
-        notify-send "Bluetooth" "No new devices found" -i bluetooth-active
-        return
-    fi
-
-    selected=$(echo -e "$options" | sort -k3 | rofi -dmenu -i -p "Pair Device" \
-        -theme-str 'window {width: 420px;}')
-
-    if [[ -n "$selected" ]]; then
-        mac=$(echo "$selected" | awk '{print $1}')
-        name=$(echo "$selected" | cut -d' ' -f4-)
-
-        notify-send "Bluetooth" "Pairing with $name..." -i bluetooth-active
-
-        if bluetoothctl pair "$mac" 2>/dev/null | grep -q "successful" && \
-           bluetoothctl trust "$mac" 2>/dev/null; then
-            notify-send "Bluetooth" "Paired with $name" -i bluetooth-active
-            connect_device "$mac"
-        else
-            notify-send "Bluetooth" "Failed to pair with $name" -i bluetooth-disabled
-        fi
-    fi
+    notify-send "Bluetooth" "Opening Blueman for device pairing..." -i bluetooth-active -t 2000
+    blueman-manager &
 }
 
 show_menu() {
@@ -207,7 +142,7 @@ show_menu() {
             options+="─────────────\n"
         fi
         
-        options+="󰂰  Scan for Devices\n"
+        options+="󰂰  Pair New Device (Blueman)\n"
         options+="󱛅  Remove Device"
     else
         options+="󰂯  Enable Bluetooth"
@@ -220,7 +155,7 @@ show_menu() {
     case "$selected" in
         *"Disable Bluetooth"*) toggle_power ;;
         *"Enable Bluetooth"*) toggle_power ;;
-        *"Scan for Devices"*) scan_devices ;;
+        *"Pair New Device"*) scan_devices ;;
         *"Remove Device"*)
             paired=$(bluetoothctl devices Paired 2>/dev/null | grep -E '^Device ([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2} ')
             device_list=""
