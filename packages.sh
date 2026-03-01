@@ -162,6 +162,7 @@ check_packages() {
 # Generate install command for missing packages
 install_missing() {
     local host="$1"
+    local noninteractive="${NONINTERACTIVE:-0}"
 
     if [ -z "$host" ]; then
         host=$(detect_host)
@@ -203,19 +204,32 @@ install_missing() {
         echo ""
     fi
 
-    read -p "Run these commands now? [y/N]: " confirm
-    if [[ "$confirm" =~ ^[Yy]$ ]]; then
+    if [ "$noninteractive" = "1" ]; then
+        # Auto-accept and use --noconfirm
         if [ ${#repo_pkgs[@]} -gt 0 ]; then
-            echo -e "${BLUE}Installing repo packages...${NC}"
-            sudo pacman -S --needed "${repo_pkgs[@]}"
+            echo -e "${BLUE}Installing repo packages (non-interactive)...${NC}"
+            sudo pacman -S --needed --noconfirm "${repo_pkgs[@]}"
         fi
         if [ ${#aur_pkgs[@]} -gt 0 ]; then
-            echo -e "${BLUE}Installing AUR packages...${NC}"
-            yay -S --needed "${aur_pkgs[@]}"
+            echo -e "${BLUE}Installing AUR packages (non-interactive)...${NC}"
+            yay -S --needed --noconfirm "${aur_pkgs[@]}"
         fi
         echo -e "${GREEN}✓ Done${NC}"
     else
-        echo -e "${YELLOW}Skipped. Copy the commands above to install manually.${NC}"
+        read -p "Run these commands now? [y/N]: " confirm
+        if [[ "$confirm" =~ ^[Yy]$ ]]; then
+            if [ ${#repo_pkgs[@]} -gt 0 ]; then
+                echo -e "${BLUE}Installing repo packages...${NC}"
+                sudo pacman -S --needed "${repo_pkgs[@]}"
+            fi
+            if [ ${#aur_pkgs[@]} -gt 0 ]; then
+                echo -e "${BLUE}Installing AUR packages...${NC}"
+                yay -S --needed "${aur_pkgs[@]}"
+            fi
+            echo -e "${GREEN}✓ Done${NC}"
+        else
+            echo -e "${YELLOW}Skipped. Copy the commands above to install manually.${NC}"
+        fi
     fi
 }
 
