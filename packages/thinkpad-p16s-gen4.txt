@@ -15,6 +15,9 @@ vulkan-radeon
 # NVMe health monitoring (1 TB Gen4 TLC Opal)
 smartmontools
 
+# Compressed RAM swap (zram)
+zram-generator
+
 # Smartcard support (hardware has smart card reader)
 ccid
 opensc
