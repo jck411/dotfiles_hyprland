@@ -26,13 +26,19 @@ echo
 
 echo -e "${CYAN}=== [1/2] Creating Timeshift Snapshot ===${NC}"
 
-COMMENT="Manual backup $(date '+%Y-%m-%d %H:%M')"
-
-if sudo timeshift --create --comments "$COMMENT" --tags D; then
-    echo -e "${GREEN}✓ Timeshift snapshot created${NC}"
+if ! command -v timeshift &>/dev/null; then
+    echo -e "${YELLOW}⚠ Timeshift not installed — skipping snapshot${NC}"
+    echo -e "${YELLOW}  Install with: yay -S timeshift${NC}"
+    TIMESHIFT_OK=false
 else
-    echo -e "${RED}✗ Timeshift snapshot failed${NC}"
-    exit 1
+    COMMENT="Manual backup $(date '+%Y-%m-%d %H:%M')"
+    if sudo timeshift --create --comments "$COMMENT" --tags D; then
+        echo -e "${GREEN}✓ Timeshift snapshot created${NC}"
+        TIMESHIFT_OK=true
+    else
+        echo -e "${RED}✗ Timeshift snapshot failed${NC}"
+        TIMESHIFT_OK=false
+    fi
 fi
 
 echo
@@ -81,5 +87,5 @@ echo -e "${GREEN}║         Backup Complete!               ║${NC}"
 echo -e "${GREEN}╚════════════════════════════════════════╝${NC}"
 echo
 echo "Summary:"
-echo "  • Timeshift snapshot created"
+echo "  • Timeshift: $( $TIMESHIFT_OK && echo "snapshot created" || echo "skipped (not installed)" )"
 echo "  • Dotfiles synced & committed"
