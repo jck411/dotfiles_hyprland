@@ -8,7 +8,15 @@
 set -e
 
 DOWNLOAD_DIR="$HOME/Downloads"
-PROFILE_PATH="$HOME/GoogleDrive/host_profiles/xps13/profile.json"
+
+# Auto-detect host profile from hypr symlink (same method as packages.sh)
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+HOST=$(readlink "$DOTFILES_DIR/config/hypr/host.conf" 2>/dev/null | grep -oP 'hosts/\K[^.]+' || echo "")
+if [[ -z "$HOST" ]]; then
+    echo "Error: could not detect host profile from config/hypr/host.conf" >&2
+    exit 1
+fi
+PROFILE_PATH="$HOME/GoogleDrive/host_profiles/$HOST/profile.json"
 
 # Silent mode for use in other scripts
 SILENT=false
