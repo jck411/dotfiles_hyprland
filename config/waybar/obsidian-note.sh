@@ -9,9 +9,9 @@ VAULT_PATH="$HOME/GoogleDrive/NOTES"
 NOTES=$(find "$VAULT_PATH" -maxdepth 1 -name '*.md' -printf '%f\n' | sed 's/\.md$//' | sort)
 
 # Build menu: "New Note" and "Mousepad" first, then existing notes
-MENU=$(printf "+ New Note\n🐭 Mousepad\n%s" "$NOTES")
+MENU=$(echo -e "+ New Note\nMousepad\0icon\x1forg.xfce.mousepad\n$NOTES")
 
-CHOICE=$(echo "$MENU" | rofi -dmenu -i -p "Obsidian" -theme waybar)
+CHOICE=$(echo "$MENU" | rofi -dmenu -i -p "Obsidian" -show-icons -theme waybar)
 
 [ -z "$CHOICE" ] && exit 0
 
@@ -20,7 +20,7 @@ if [ "$CHOICE" = "+ New Note" ]; then
     [ -z "$TITLE" ] && exit 0
     ENCODED=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$TITLE")
     xdg-open "obsidian://new?vault=${VAULT}&name=${ENCODED}" &
-elif [ "$CHOICE" = "🐭 Mousepad" ]; then
+elif [ "$CHOICE" = "Mousepad" ]; then
     mousepad &
 else
     ENCODED=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$CHOICE")
