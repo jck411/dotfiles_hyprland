@@ -9,9 +9,9 @@ VAULT_PATH="$HOME/GoogleDrive/NOTES"
 NOTES=$(find "$VAULT_PATH" -maxdepth 1 -name '*.md' -printf '%f\n' | sed 's/\.md$//' | sort)
 
 # Build menu: "New Note" and "Mousepad" first, then existing notes
-MENU=$(echo -e "+ New Note\nMousepad\0icon\x1forg.xfce.mousepad\n$NOTES")
+MENU=$(printf "+ New Note\nMousepad\n%s" "$NOTES")
 
-CHOICE=$(echo "$MENU" | rofi -dmenu -i -p "Obsidian" -show-icons -theme waybar)
+CHOICE=$(echo "$MENU" | rofi -dmenu -i -p "Obsidian" -theme waybar)
 
 [ -z "$CHOICE" ] && exit 0
 
