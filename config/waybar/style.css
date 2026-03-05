@@ -235,20 +235,6 @@ tooltip label {
     color: @nord8;
 }
 
-/* Mousepad text editor */
-#custom-mousepad {
-    padding: 2px 10px;
-    margin: 4px 2px;
-    color: @nord4;
-    font-size: 12px;
-    min-width: 14px;
-    min-height: 14px;
-}
-
-#custom-mousepad:hover {
-    color: @nord8;
-}
-
 /* Service toggle widgets (SVG icons) */
 #custom-mcp {
     padding: 2px 8px;

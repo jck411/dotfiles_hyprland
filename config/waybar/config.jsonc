@@ -14,7 +14,6 @@
 	"modules-right": [
 		"custom/bookmarks",
 		"custom/obsidian",
-		"custom/mousepad",
 		"pulseaudio",
 		"backlight",
 		"network",
@@ -159,11 +158,5 @@
 		"tooltip": true,
 		"tooltip-format": "New Obsidian Note",
 		"on-click": "~/.config/waybar/obsidian-note.sh"
-	},
-	"custom/mousepad": {
-		"format": "🐭",
-		"tooltip": true,
-		"tooltip-format": "Mousepad",
-		"on-click": "mousepad"
 	}
 }
