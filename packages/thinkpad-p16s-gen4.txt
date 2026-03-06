@@ -18,6 +18,9 @@ smartmontools
 # Compressed RAM swap (zram)
 zram-generator
 
+# Thunderbolt 3 dock authorization (40AN Workstation Dock Gen 2)
+bolt
+
 # Smartcard support (hardware has smart card reader)
 ccid
 opensc
