@@ -3,8 +3,8 @@
     {
       "name": "eDP-1",
       "description": "Lenovo Group Limited N160JCA-GT1",
-      "x": 1920,
-      "y": 245,
+      "x": 628,
+      "y": 1440,
       "physical_width": 1920,
       "physical_height": 1200,
       "transform": "normal",
@@ -19,16 +19,16 @@
       "active": true
     },
     {
-      "name": "HDMI-A-1",
-      "description": "HP Inc. HP E243 CNC9233V1Q",
-      "x": 0,
+      "name": "DP-6",
+      "description": "Samsung Electric Company Odyssey G95SC H1AK500000",
+      "x": 1916,
       "y": 0,
-      "physical_width": 1920,
-      "physical_height": 1080,
+      "physical_width": 5120,
+      "physical_height": 1440,
       "transform": "normal",
       "scale": 1.0,
       "scale_filter": null,
-      "refresh": 60.0,
+      "refresh": 119.98,
       "dpms": true,
       "adaptive_sync": false,
       "custom_mode": false,
@@ -45,5 +45,15 @@
     "use-desc": false,
     "confirm-timeout": 10,
     "profile-bound-wallpapers": true
+  },
+  "wallpapers": {
+    "eDP-1": {
+      "path": "color: 000000",
+      "mode": ""
+    },
+    "DP-6": {
+      "path": "color: 000000",
+      "mode": ""
+    }
   }
 }
