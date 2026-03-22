@@ -1,8 +1,9 @@
 #!/bin/bash
 # dock-layout.sh — 4-column docked layout for ultrawide + Spotify on laptop
 #
-# Launches: VSCode | ChatGPT | Calendar | Gmail on workspace 1 (external)
-#           Spotify on workspace 8 (laptop)
+# Kills existing layout apps, then launches fresh:
+#   VSCode | ChatGPT | Calendar | Gmail on workspace 1 (external)
+#   Spotify on workspace 8 (laptop)
 #
 # Only runs when docked (external monitor detected). Bound to SUPER+SHIFT+D.
 # Uses moveworkspacetomonitor to guarantee correct monitor placement.
@@ -43,7 +44,7 @@ for c in json.load(sys.stdin):
 " 2>/dev/null
 }
 
-# Wait for a new window not in the known set (up to 15s)
+# Wait for a new window (up to 15s)
 wait_for_window() {
     local class="$1" known="$2"
     for _ in $(seq 1 30); do
@@ -65,6 +66,26 @@ for c in json.load(sys.stdin):
     return 1
 }
 
+# Close all windows matching a class via hyprctl
+close_all() {
+    local addrs
+    addrs=$(get_addrs "$1")
+    for addr in $addrs; do
+        hyprctl dispatch closewindow "address:$addr" 2>/dev/null || true
+    done
+}
+
+# =============================================================================
+# CLOSE EXISTING LAYOUT APPS (fresh start)
+# =============================================================================
+
+close_all "brave-browser"
+close_all "code-insiders"
+close_all "spotify"
+
+# Wait for windows to close
+sleep 1
+
 # =============================================================================
 # FORCE WORKSPACES ONTO CORRECT MONITORS
 # =============================================================================
@@ -85,14 +106,9 @@ sleep 0.3
 # COLUMN 1: VS CODE
 # =============================================================================
 
-known_brave=$(get_addrs "brave-browser")
-
-vscode_addr=$(get_addrs "code-insiders" | head -1)
-if [[ -z "$vscode_addr" ]]; then
-    code-insiders &>/dev/null &
-    disown
-    vscode_addr=$(wait_for_window "code-insiders" "") || true
-fi
+code-insiders &>/dev/null &
+disown
+vscode_addr=$(wait_for_window "code-insiders" "") || true
 if [[ -n "$vscode_addr" ]]; then
     hyprctl dispatch movetoworkspacesilent "1,address:$vscode_addr" 2>/dev/null
     hyprctl dispatch focuswindow "address:$vscode_addr" 2>/dev/null
@@ -103,6 +119,7 @@ sleep 1
 # COLUMN 2: ChatGPT (splits: [VSCode | ChatGPT])
 # =============================================================================
 
+known_brave=""
 brave --new-window "https://chatgpt.com" &>/dev/null &
 disown
 chat_addr=$(wait_for_window "brave-browser" "$known_brave") || true
@@ -138,12 +155,9 @@ sleep 1
 # LAPTOP: Spotify on workspace 8
 # =============================================================================
 
-spot_addr=$(get_addrs "spotify" | head -1)
-if [[ -z "$spot_addr" ]]; then
-    spotify &>/dev/null &
-    disown
-    spot_addr=$(wait_for_window "spotify" "") || true
-fi
+spotify &>/dev/null &
+disown
+spot_addr=$(wait_for_window "spotify" "") || true
 [[ -n "$spot_addr" ]] && hyprctl dispatch movetoworkspacesilent "8,address:$spot_addr" 2>/dev/null
 
 # =============================================================================
