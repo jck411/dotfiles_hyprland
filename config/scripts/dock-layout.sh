@@ -1,12 +1,11 @@
 #!/bin/bash
 # dock-layout.sh — 4-column docked layout for ultrawide (external monitor only)
 #
-# Kills existing layout apps, then launches fresh:
-#   VSCode | ChatGPT | Calendar | Gmail on workspace 1 (external)
-#   Spotify on workspace 2 (external)
+# Kills existing layout apps, then launches fresh on workspace 1 (external):
+#   Calendar | VSCode | ChatGPT | Spotify(top) + Thunar(bottom)
 #
 # Only runs when docked (external monitor detected). Bound to SUPER+SHIFT+D.
-# Uses moveworkspacetomonitor to guarantee correct monitor placement.
+# Uses dwindle binary splits to build the column layout.
 
 set -e
 
@@ -34,7 +33,6 @@ fi
 # HELPERS
 # =============================================================================
 
-# Get addresses of all windows matching a class
 get_addrs() {
     hyprctl clients -j 2>/dev/null | python3 -c "
 import json, sys
@@ -44,7 +42,6 @@ for c in json.load(sys.stdin):
 " 2>/dev/null
 }
 
-# Wait for a new window (up to 15s)
 wait_for_window() {
     local class="$1" known="$2"
     for _ in $(seq 1 30); do
@@ -66,7 +63,6 @@ for c in json.load(sys.stdin):
     return 1
 }
 
-# Close all windows matching a class via hyprctl
 close_all() {
     local addrs
     addrs=$(get_addrs "$1")
@@ -80,85 +76,80 @@ close_all() {
 # =============================================================================
 
 close_all "brave-browser"
+close_all "brave-calendar"
 close_all "code-insiders"
 close_all "spotify"
+close_all "thunar"
 
-# Wait for windows to close
 sleep 1
 
 # =============================================================================
-# FORCE WORKSPACES ONTO EXTERNAL MONITOR
+# FORCE WORKSPACE ONTO EXTERNAL MONITOR
 # =============================================================================
 
 hyprctl dispatch moveworkspacetomonitor "1 $EXT" 2>/dev/null
-hyprctl dispatch moveworkspacetomonitor "2 $EXT" 2>/dev/null
 
-# Force dwindle to always split right (columns, not rows on ultrawide)
+# Dwindle: split right/bottom; multiplier 1.5 ensures horizontal splits at 50%
+# width (2560/1440=1.78 > 1.5) but vertical at 25% width (1280/1440=0.89 < 1.5)
 hyprctl keyword dwindle:force_split 2 2>/dev/null
 hyprctl keyword dwindle:split_width_multiplier 1.5 2>/dev/null
 
-# Focus workspace 1 on external monitor
 hyprctl dispatch focusmonitor "$EXT" 2>/dev/null
 hyprctl dispatch workspace 1 2>/dev/null
 sleep 0.3
 
 # =============================================================================
-# COLUMN 1: VS CODE
+# STEP 1: Calendar (Brave PWA — fills workspace)
 # =============================================================================
 
-code-insiders &>/dev/null &
+brave --profile-directory=Default --app=https://calendar.google.com/calendar/u/0/r &>/dev/null &
 disown
-vscode_addr=$(wait_for_window "code-insiders" "") || true
-if [[ -n "$vscode_addr" ]]; then
-    hyprctl dispatch movetoworkspacesilent "1,address:$vscode_addr" 2>/dev/null
-    hyprctl dispatch focuswindow "address:$vscode_addr" 2>/dev/null
-fi
+cal_addr=$(wait_for_window "brave-calendar" "") || true
 sleep 1
 
 # =============================================================================
-# COLUMN 2: ChatGPT (splits: [VSCode | ChatGPT])
+# STEP 2: ChatGPT (splits Calendar → [Calendar | ChatGPT])
 # =============================================================================
 
-known_brave=""
 brave --new-window "https://chatgpt.com" &>/dev/null &
 disown
-chat_addr=$(wait_for_window "brave-browser" "$known_brave") || true
-known_brave="$known_brave $chat_addr"
+chat_addr=$(wait_for_window "brave-browser" "") || true
 sleep 1
 
 # =============================================================================
-# COLUMN 3: Calendar
-# Focus ChatGPT → Calendar splits its half → [VSCode | ChatGPT | Calendar]
-# =============================================================================
-
-[[ -n "$chat_addr" ]] && hyprctl dispatch focuswindow "address:$chat_addr" 2>/dev/null
-sleep 0.3
-brave --new-window "https://calendar.google.com" &>/dev/null &
-disown
-cal_addr=$(wait_for_window "brave-browser" "$known_brave") || true
-known_brave="$known_brave $cal_addr"
-sleep 1
-
-# =============================================================================
-# COLUMN 4: Gmail
-# Focus Calendar → Gmail splits its half → [VSCode | ChatGPT | Calendar | Gmail]
+# STEP 3: VSCode (focus Calendar → splits it → [[Calendar | VSCode] | ChatGPT])
 # =============================================================================
 
 [[ -n "$cal_addr" ]] && hyprctl dispatch focuswindow "address:$cal_addr" 2>/dev/null
 sleep 0.3
-brave --new-window "https://mail.google.com" &>/dev/null &
+code-insiders &>/dev/null &
 disown
-gmail_addr=$(wait_for_window "brave-browser" "$known_brave") || true
+vscode_addr=$(wait_for_window "code-insiders" "") || true
 sleep 1
 
 # =============================================================================
-# SPOTIFY on workspace 2 (external)
+# STEP 4: Spotify (focus ChatGPT → splits it →
+#   [[Calendar | VSCode] | [ChatGPT | Spotify]])
 # =============================================================================
 
+[[ -n "$chat_addr" ]] && hyprctl dispatch focuswindow "address:$chat_addr" 2>/dev/null
+sleep 0.3
 spotify &>/dev/null &
 disown
 spot_addr=$(wait_for_window "spotify" "") || true
-[[ -n "$spot_addr" ]] && hyprctl dispatch movetoworkspacesilent "2,address:$spot_addr" 2>/dev/null
+sleep 1
+
+# =============================================================================
+# STEP 5: Thunar (focus Spotify → vertical split since column is taller than
+#   wide → [[Calendar | VSCode] | [ChatGPT | [Spotify / Thunar]]])
+# =============================================================================
+
+[[ -n "$spot_addr" ]] && hyprctl dispatch focuswindow "address:$spot_addr" 2>/dev/null
+sleep 0.3
+thunar &>/dev/null &
+disown
+wait_for_window "thunar" "" >/dev/null || true
+sleep 0.5
 
 # =============================================================================
 # CLEANUP
@@ -167,4 +158,4 @@ spot_addr=$(wait_for_window "spotify" "") || true
 hyprctl keyword dwindle:split_width_multiplier 1.0 2>/dev/null
 hyprctl dispatch workspace 1 2>/dev/null
 
-notify-send -i display "Docked Layout" "VSCode | ChatGPT | Calendar | Gmail\nSpotify → workspace 2" -t 3000 2>/dev/null || true
+notify-send -i display "Docked Layout" "Calendar | VSCode | ChatGPT | Spotify/Thunar" -t 3000 2>/dev/null || true
