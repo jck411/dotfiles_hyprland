@@ -1,7 +1,7 @@
 #!/bin/bash
 # Lid close/open handler for Hyprland
 # Reads action from power-settings.conf
-# When docked (external display connected), lid close is always ignored.
+# When docked: lid close disables laptop display, lid open re-enables it.
 
 CONFIG_FILE="$HOME/.config/power-settings.conf"
 
@@ -26,8 +26,9 @@ is_docked() {
 
 case "$1" in
     close)
-        # When docked, ignore lid close — external display stays active
         if is_docked; then
+            # Disable laptop display — external stays active
+            hyprctl keyword monitor "eDP-1,disable" 2>/dev/null
             exit 0
         fi
         case "$LID_CLOSE_ACTION" in
@@ -46,6 +47,10 @@ case "$1" in
         esac
         ;;
     open)
+        if is_docked; then
+            # Re-enable laptop as secondary display
+            hyprctl keyword monitor "eDP-1,preferred,auto,1" 2>/dev/null
+        fi
         hyprctl dispatch dpms on
         ;;
 esac

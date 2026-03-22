@@ -3,10 +3,11 @@
 #
 # Watches Hyprland IPC for monitor connect/disconnect events.
 # When docked (external display detected):
-#   - Positions monitors (external at 0,0, laptop below)
-#   - Binds workspaces (1-7 → external, 8-10 → laptop)
+#   - Disables laptop display (eDP-1) — lid is closed when docked
+#   - All workspaces (1-10) → external monitor only
 #   - Starts waybar with autohide config
 # When undocked:
+#   - Re-enables laptop display
 #   - Kills autohide, restores normal waybar
 #   - Clears workspace-monitor bindings
 #
@@ -79,17 +80,19 @@ apply_docked_layout() {
     ext=$(get_external_monitor)
     [[ -z "$ext" ]] && return
 
-    # Position: external at 0,0 — laptop centered below
-    hyprctl keyword monitor "$ext,preferred,0x0,1" 2>/dev/null
-    hyprctl keyword monitor "eDP-1,preferred,1600x1440,1" 2>/dev/null
+    # Disable laptop display — lid is closed when docked
+    hyprctl keyword monitor "eDP-1,disable" 2>/dev/null
 
-    # Bind workspaces: 1-7 → external, 8-10 → laptop
-    for ws in 1 2 3 4 5 6 7; do
+    # External monitor at 0,0
+    hyprctl keyword monitor "$ext,preferred,0x0,1" 2>/dev/null
+
+    # All workspaces → external
+    for ws in 1 2 3 4 5 6 7 8 9 10; do
         hyprctl keyword workspace "$ws,monitor:$ext" 2>/dev/null
     done
-    for ws in 8 9 10; do
-        hyprctl keyword workspace "$ws,monitor:eDP-1" 2>/dev/null
-    done
+
+    # Cursor defaults to external
+    hyprctl keyword cursor:default_monitor "$ext" 2>/dev/null
 
     hyprctl dispatch workspace 1 2>/dev/null
 }
@@ -98,7 +101,10 @@ clear_docked_layout() {
     for ws in 1 2 3 4 5 6 7 8 9 10; do
         hyprctl keyword workspace "$ws,monitor:" 2>/dev/null || true
     done
+    # Re-enable laptop display
     hyprctl keyword monitor "eDP-1,preferred,auto,1" 2>/dev/null
+    # Cursor back to laptop
+    hyprctl keyword cursor:default_monitor "eDP-1" 2>/dev/null
 }
 
 # =============================================================================

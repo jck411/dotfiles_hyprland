@@ -1,9 +1,9 @@
 #!/bin/bash
-# dock-layout.sh — 4-column docked layout for ultrawide + Spotify on laptop
+# dock-layout.sh — 4-column docked layout for ultrawide (external monitor only)
 #
 # Kills existing layout apps, then launches fresh:
 #   VSCode | ChatGPT | Calendar | Gmail on workspace 1 (external)
-#   Spotify on workspace 8 (laptop)
+#   Spotify on workspace 2 (external)
 #
 # Only runs when docked (external monitor detected). Bound to SUPER+SHIFT+D.
 # Uses moveworkspacetomonitor to guarantee correct monitor placement.
@@ -87,11 +87,11 @@ close_all "spotify"
 sleep 1
 
 # =============================================================================
-# FORCE WORKSPACES ONTO CORRECT MONITORS
+# FORCE WORKSPACES ONTO EXTERNAL MONITOR
 # =============================================================================
 
 hyprctl dispatch moveworkspacetomonitor "1 $EXT" 2>/dev/null
-hyprctl dispatch moveworkspacetomonitor "8 eDP-1" 2>/dev/null
+hyprctl dispatch moveworkspacetomonitor "2 $EXT" 2>/dev/null
 
 # Force dwindle to always split right (columns, not rows on ultrawide)
 hyprctl keyword dwindle:force_split 2 2>/dev/null
@@ -152,13 +152,13 @@ gmail_addr=$(wait_for_window "brave-browser" "$known_brave") || true
 sleep 1
 
 # =============================================================================
-# LAPTOP: Spotify on workspace 8
+# SPOTIFY on workspace 2 (external)
 # =============================================================================
 
 spotify &>/dev/null &
 disown
 spot_addr=$(wait_for_window "spotify" "") || true
-[[ -n "$spot_addr" ]] && hyprctl dispatch movetoworkspacesilent "8,address:$spot_addr" 2>/dev/null
+[[ -n "$spot_addr" ]] && hyprctl dispatch movetoworkspacesilent "2,address:$spot_addr" 2>/dev/null
 
 # =============================================================================
 # CLEANUP
@@ -167,4 +167,4 @@ spot_addr=$(wait_for_window "spotify" "") || true
 hyprctl keyword dwindle:split_width_multiplier 1.0 2>/dev/null
 hyprctl dispatch workspace 1 2>/dev/null
 
-notify-send -i display "Docked Layout" "VSCode | ChatGPT | Calendar | Gmail\nSpotify → laptop" -t 3000 2>/dev/null || true
+notify-send -i display "Docked Layout" "VSCode | ChatGPT | Calendar | Gmail\nSpotify → workspace 2" -t 3000 2>/dev/null || true
