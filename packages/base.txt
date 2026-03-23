@@ -6,6 +6,7 @@
 # DESKTOP ENVIRONMENT
 # =============================================================================
 hyprland
+hypridle
 hyprlock
 waybar
 rofi
