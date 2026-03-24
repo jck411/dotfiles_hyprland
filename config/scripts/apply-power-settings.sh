@@ -112,7 +112,14 @@ AUTO_LOGOFF_TIMEOUT="${!lo_timeout_var:-600}"
 # RESTART HYPRIDLE
 # =============================================================================
 
-killall hypridle 2>/dev/null || true
-sleep 0.3
+killall -w hypridle 2>/dev/null || true
 hypridle &
 disown
+
+# Verify it started
+sleep 0.5
+if ! pgrep -x hypridle >/dev/null; then
+    echo "WARNING: hypridle failed to start, retrying..."
+    hypridle &
+    disown
+fi
