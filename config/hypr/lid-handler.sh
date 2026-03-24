@@ -31,19 +31,12 @@ case "$1" in
             hyprctl keyword monitor "eDP-1,disable" 2>/dev/null
             exit 0
         fi
+        # Not docked — use configured action
         case "$LID_CLOSE_ACTION" in
-            suspend)
-                systemctl suspend
-                ;;
-            lock)
-                hyprlock || swaylock || loginctl lock-session
-                ;;
-            poweroff)
-                systemctl poweroff
-                ;;
-            ignore)
-                # Do nothing
-                ;;
+            suspend)  systemctl suspend ;;
+            lock)     hyprlock || loginctl lock-session ;;
+            poweroff) systemctl poweroff ;;
+            ignore)   ;;
         esac
         ;;
     open)
