@@ -1,16 +1,19 @@
 #!/bin/bash
 # Lid close/open handler for Hyprland
-# Reads action from power-settings.conf
-# When docked: lid close disables laptop display, lid open re-enables it.
+# Reads dock-aware settings from power-settings.conf
+# When docked: ALWAYS disables laptop display (only external used), then runs configured action
+# When undocked: runs UNDOCKED_LID_CLOSE_ACTION (default: poweroff)
 
 CONFIG_FILE="$HOME/.config/power-settings.conf"
 
 # Load config
 if [[ -f "$CONFIG_FILE" ]]; then
     source "$CONFIG_FILE"
-else
-    LID_CLOSE_ACTION="poweroff"
 fi
+
+# Defaults if config missing
+DOCKED_LID_CLOSE_ACTION="${DOCKED_LID_CLOSE_ACTION:-ignore}"
+UNDOCKED_LID_CLOSE_ACTION="${UNDOCKED_LID_CLOSE_ACTION:-poweroff}"
 
 # Returns 0 (true) if any external display connector is connected
 is_docked() {
@@ -27,17 +30,22 @@ is_docked() {
 case "$1" in
     close)
         if is_docked; then
-            # Disable laptop display — external stays active
+            # Always disable laptop display when docked — only external is used
             hyprctl keyword monitor "eDP-1,disable" 2>/dev/null
-            exit 0
+            case "$DOCKED_LID_CLOSE_ACTION" in
+                suspend)  systemctl suspend ;;
+                lock)     hyprlock || loginctl lock-session ;;
+                poweroff) systemctl poweroff ;;
+                ignore)   ;;
+            esac
+        else
+            case "$UNDOCKED_LID_CLOSE_ACTION" in
+                suspend)  systemctl suspend ;;
+                lock)     hyprlock || loginctl lock-session ;;
+                poweroff) systemctl poweroff ;;
+                ignore)   ;;
+            esac
         fi
-        # Not docked — use configured action
-        case "$LID_CLOSE_ACTION" in
-            suspend)  systemctl suspend ;;
-            lock)     hyprlock || loginctl lock-session ;;
-            poweroff) systemctl poweroff ;;
-            ignore)   ;;
-        esac
         ;;
     open)
         if is_docked; then

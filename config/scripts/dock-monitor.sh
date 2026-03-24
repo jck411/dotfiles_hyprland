@@ -21,6 +21,7 @@ WAYBAR_NORMAL="$HOME/.config/waybar/config.jsonc"
 WAYBAR_DOCKED="$HOME/.config/waybar/config-docked.jsonc"
 WAYBAR_STYLE="$HOME/.config/waybar/style.css"
 AUTOHIDE_SCRIPT="$HOME/.config/scripts/waybar-autohide.sh"
+APPLY_SETTINGS="$HOME/.config/scripts/apply-power-settings.sh"
 
 # =============================================================================
 # HARDWARE DETECTION
@@ -119,6 +120,7 @@ enter_docked() {
     sleep 0.5
     start_autohide
     echo "docked" > "$STATE_FILE"
+    "$APPLY_SETTINGS" 2>/dev/null || true
     notify-send -i display "Docked" "Autohide waybar → top edge\nPress SUPER+SHIFT+D to launch docked layout" -t 4000 2>/dev/null || true
 }
 
@@ -128,6 +130,7 @@ enter_undocked() {
     clear_docked_layout
     restart_waybar "$WAYBAR_NORMAL"
     echo "undocked" > "$STATE_FILE"
+    "$APPLY_SETTINGS" 2>/dev/null || true
     notify-send -i display "Undocked" "Waybar restored. Laptop only." -t 2000 2>/dev/null || true
 }
 
@@ -140,6 +143,7 @@ if is_docked; then
     enter_docked
 else
     echo "undocked" > "$STATE_FILE"
+    "$APPLY_SETTINGS" 2>/dev/null || true
 fi
 
 # Wait for Hyprland IPC socket
