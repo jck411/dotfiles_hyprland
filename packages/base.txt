@@ -161,6 +161,7 @@ meld
 # =============================================================================
 base
 base-devel
+flatpak
 linux
 linux-firmware
 linux-headers
@@ -182,6 +183,6 @@ xorg-xdpyinfo
 # NOTES & PDF
 # =============================================================================
 obsidian
-xournalpp
 zathura
 zathura-pdf-mupdf
+# page.codeberg.censor.Censor      # [FLATPAK] PDF redaction tool
