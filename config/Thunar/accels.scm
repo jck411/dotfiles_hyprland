@@ -48,7 +48,7 @@
 ; (gtk_accel_path "<Actions>/ThunarWindow/close-all-windows" "<Primary><Shift>w")
 ; (gtk_accel_path "<Actions>/ThunarStandardView/create-document" "")
 ; (gtk_accel_path "<Actions>/ThunarWindow/detach-tab" "")
-; (gtk_accel_path "<Actions>/ThunarBookmarks/07117fd4590bdbbb1dafa8aadf77a76b" "")
+
 ; (gtk_accel_path "<Actions>/ThunarWindow/cancel-search" "Escape")
 ; (gtk_accel_path "<Actions>/ThunarWindow/zoom-in-alt2" "<Primary>equal")
 ; (gtk_accel_path "<Actions>/ThunarStatusBar/toggle-hidden-count" "")
@@ -96,7 +96,7 @@
 ; (gtk_accel_path "<Actions>/ThunarStandardView/rename" "F2")
 ; (gtk_accel_path "<Actions>/ThunarWindow/open-location" "<Primary>l")
 ; (gtk_accel_path "<Actions>/ThunarWindow/view-as-compact-list" "<Primary>3")
-; (gtk_accel_path "<Actions>/ThunarBookmarks/7f4e340d8e1ae4ab61148c482a1a9f41" "")
+
 ; (gtk_accel_path "<Actions>/ThunarWindow/view-menu" "")
 ; (gtk_accel_path "<Actions>/ThunarWindow/search" "<Primary>f")
 ; (gtk_accel_path "<Actions>/ThunarWindow/new-tab" "<Primary>t")
