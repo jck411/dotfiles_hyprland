@@ -5,8 +5,20 @@
 	<name>Open Terminal Here</name>
 	<submenu></submenu>
 	<unique-id>1765261927237946-1</unique-id>
-	<command>exo-open --working-directory %f --launch TerminalEmulator</command>
-	<description>Example for a custom action</description>
+	<command>foot --working-directory %f</command>
+	<description>Open Foot terminal in this directory</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Launch OpenCode Web</name>
+	<submenu></submenu>
+	<unique-id>1765261927237946-2</unique-id>
+	<command>bash -c &quot;cd %f &amp;&amp; opencode web &amp;&quot;</command>
+	<description>Run opencode web in this directory</description>
 	<range></range>
 	<patterns>*</patterns>
 	<startup-notify/>
