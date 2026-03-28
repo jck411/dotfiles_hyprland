@@ -39,6 +39,7 @@ gvfs
 mousepad
 visual-studio-code-insiders-bin    # [AUR]
 cursor-bin                         # [AUR]
+opencode
 # antigravity                      # [MANUAL] tarball from antigravity.google — installed to /opt/Antigravity/
 nano
 nano-syntax-highlighting
