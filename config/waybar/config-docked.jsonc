@@ -15,6 +15,7 @@
 		"clock"
 	],
 	"modules-right": [
+		"custom/openrouter",
 		"custom/bookmarks",
 		"custom/obsidian",
 		"pulseaudio",
@@ -141,5 +142,13 @@
 		"tooltip": true,
 		"tooltip-format": "New Obsidian Note",
 		"on-click": "~/.config/waybar/obsidian-note.sh"
+	},
+	"custom/openrouter": {
+		"exec": "~/.config/waybar/openrouter.sh",
+		"return-type": "json",
+		"interval": "once",
+		"signal": 9,
+		"on-click": "pkill -RTMIN+9 waybar",
+		"on-click-right": "brave --app=https://openrouter.ai/logs --remote-debugging-port=9222 --force-dark-mode --disable-session-restore &"
 	}
 }

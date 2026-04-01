@@ -235,6 +235,32 @@ tooltip label {
     color: @nord8;
 }
 
+/* OpenRouter credit balance */
+#custom-openrouter {
+    padding: 2px 8px;
+    margin: 4px 2px;
+    color: @nord8;
+    min-width: 16px;
+    min-height: 16px;
+    background-image: url("/home/jack/.config/waybar/icons/openrouter.svg");
+    background-size: 14px 14px;
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 20px;
+}
+
+#custom-openrouter.warning {
+    color: @nord13;
+}
+
+#custom-openrouter.critical {
+    color: @nord11;
+}
+
+#custom-openrouter.error {
+    color: @nord3;
+}
+
 /* Service toggle widgets (SVG icons) */
 #custom-mcp {
     padding: 2px 8px;
