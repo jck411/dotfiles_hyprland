@@ -24,6 +24,7 @@ This repo **only manages configuration files** via symlinks. It does not install
 | `waybar/` | Status bar config, scripts, and styling |
 | `foot/` | Terminal emulator config |
 | `foot-quake/` | Drop-down quake-style terminal |
+| `swappy/` | Screenshot editor and save location |
 | `rofi/` | Application launcher config |
 | `mako/` | Notification daemon config |
 | `gtk-3.0/` | GTK3 theme settings |
@@ -81,6 +82,7 @@ During install you'll be prompted to select a host profile for your machine.
 ```bash
 ./install.sh hypr
 ./install.sh waybar
+./install.sh swappy
 ./install.sh brave-flags.conf
 ```
 
