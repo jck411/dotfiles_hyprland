@@ -87,6 +87,8 @@ openssh
 wget
 iw
 iwd
+android-tools
+gnirehtet                              # [AUR] reverse tethering — share laptop WiFi to phone via USB
 
 # =============================================================================
 # CLIPBOARD & SCREENSHOTS
