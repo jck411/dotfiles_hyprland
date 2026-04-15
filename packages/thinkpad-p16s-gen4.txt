@@ -25,3 +25,6 @@ bolt
 ccid
 opensc
 pcsc-tools
+
+# Plex desktop client
+plex-desktop                         # [AUR]
