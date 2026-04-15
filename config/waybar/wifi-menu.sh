@@ -38,6 +38,17 @@ toggle_wifi() {
     fi
 }
 
+# Open captive portal page if detected
+check_captive_portal() {
+    sleep 2
+    local connectivity
+    connectivity=$(nmcli -t -f CONNECTIVITY g 2>/dev/null)
+    if [[ "$connectivity" == "portal" ]]; then
+        notify-send "WiFi" "Captive portal detected — opening browser" -i network-wireless
+        xdg-open http://nmcheck.gnome.org/check_network_status.txt 2>/dev/null &
+    fi
+}
+
 # Connect to a network
 connect_network() {
     local ssid="$1"
@@ -45,17 +56,23 @@ connect_network() {
 
     # Check if we have a saved connection
     if get_saved_networks | grep -qxF "$ssid"; then
-        nmcli connection up "$ssid" 2>&1 && \
-            notify-send "WiFi" "Connected to $ssid" -i network-wireless || \
+        if nmcli connection up "$ssid" 2>&1; then
+            notify-send "WiFi" "Connected to $ssid" -i network-wireless
+            check_captive_portal &
+        else
             notify-send "WiFi" "Failed to connect to $ssid" -i network-wireless-offline
+        fi
         return
     fi
 
     # Open network — connect directly without password
     if [[ -z "$security" || "$security" == "--" || "$security" == "" ]]; then
-        nmcli device wifi connect "$ssid" 2>&1 && \
-            notify-send "WiFi" "Connected to $ssid" -i network-wireless || \
+        if nmcli device wifi connect "$ssid" 2>&1; then
+            notify-send "WiFi" "Connected to $ssid" -i network-wireless
+            check_captive_portal &
+        else
             notify-send "WiFi" "Failed to connect to $ssid" -i network-wireless-offline
+        fi
         return
     fi
 

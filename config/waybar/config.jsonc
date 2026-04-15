@@ -91,7 +91,8 @@
 		"format-disconnected": "󰤭",
 		"tooltip-format": "{essid} ({signalStrength}%)\n{ipaddr}",
 		"tooltip-format-ethernet": "{ifname}: {ipaddr}",
-		"on-click": "~/.config/waybar/wifi-menu.sh"
+		"on-click": "~/.config/waybar/wifi-menu.sh",
+		"on-click-right": "~/.config/waybar/wifi-menu.sh --toggle"
 	},
 	"bluetooth": {
 		"format": "󰂯",
