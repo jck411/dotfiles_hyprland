@@ -39,7 +39,7 @@ gvfs
 mousepad
 visual-studio-code-insiders-bin    # [AUR]
 cursor-bin                         # [AUR]
-opencode
+opencode-desktop-bin               # [AUR] desktop (Tauri/webkit2gtk, Wayland-native) + bundles CLI at /usr/bin/opencode-cli
 antigravity                        # [MANUAL] tarball from antigravity.google — installed to /opt/Antigravity/
 nano
 nano-syntax-highlighting
