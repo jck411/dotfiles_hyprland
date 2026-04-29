@@ -24,13 +24,13 @@ This repo **only manages configuration files** via symlinks. It does not install
 | `waybar/` | Status bar config, scripts, and styling |
 | `foot/` | Terminal emulator config |
 | `foot-quake/` | Drop-down quake-style terminal |
-| `swappy/` | Screenshot editor and save location |
+| `swappy/` | Screenshot editor, save location, and clipboard copy |
 | `rofi/` | Application launcher config |
 | `mako/` | Notification daemon config |
 | `gtk-3.0/` | GTK3 theme settings |
 | `gtk-4.0/` | GTK4 theme settings |
 | `Thunar/` | File manager |
-| `imv/` | Image viewer |
+| `gthumb/` | Image viewer / editor |
 | `mpv/` | Video player |
 | `networkmanager-dmenu/` | WiFi menu |
 | `nwg-displays/` | Display configuration GUI |

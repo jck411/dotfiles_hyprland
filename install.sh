@@ -28,7 +28,6 @@ CONFIG_DIRS=(
     "gtk-3.0"
     "gtk-4.0"
     "Thunar"
-    "imv"
     "mpv"
     "networkmanager-dmenu"
     "nwg-displays"
@@ -189,7 +188,7 @@ install_single() {
     local component="$1"
     
     case "$component" in
-        hypr|waybar|foot|foot-quake|swappy|rofi|mako|gtk-3.0|gtk-4.0|Thunar|imv|mpv|networkmanager-dmenu|nwg-displays|xdg-desktop-portal|scripts)
+        hypr|waybar|foot|foot-quake|swappy|rofi|mako|gtk-3.0|gtk-4.0|Thunar|mpv|networkmanager-dmenu|nwg-displays|xdg-desktop-portal|scripts)
             install_config_dir "$component"
             ;;
         brave-flags.conf|code-flags.conf|cursor-flags.conf|electron-flags.conf|power-settings.conf)
@@ -215,7 +214,7 @@ install_single() {
         *)
             echo -e "${RED}Unknown component:${NC} $component"
             echo "Available: hypr, waybar, foot, foot-quake, swappy, rofi, mako, gtk-3.0, gtk-4.0,"
-            echo "  Thunar, imv, mpv, networkmanager-dmenu, nwg-displays, xdg-desktop-portal,"
+            echo "  Thunar, mpv, networkmanager-dmenu, nwg-displays, xdg-desktop-portal,"
             echo "  scripts, shell, host, brave-flags.conf, code-flags.conf, cursor-flags.conf,"
             echo "  electron-flags.conf, power-settings.conf"
             exit 1
@@ -265,7 +264,7 @@ show_help() {
     echo ""
     echo "Config directories:"
     echo "  hypr, waybar, foot, foot-quake, rofi, mako, gtk-3.0, gtk-4.0,"
-    echo "  Thunar, imv, mpv, networkmanager-dmenu, nwg-displays,"
+    echo "  Thunar, mpv, networkmanager-dmenu, nwg-displays,"
     echo "  xdg-desktop-portal, scripts"
     echo ""
     echo "Standalone files:"
