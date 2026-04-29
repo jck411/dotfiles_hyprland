@@ -191,6 +191,7 @@ libreoffice-fresh
 # SCANNING
 # =============================================================================
 sane-airscan                       # network scanner backend (eSCL/AirScan + WSD)
+brscan4                            # [AUR] SANE driver for Brother network scanners (HL-L2380DW)
 simple-scan                        # GTK scanning GUI
 
 # =============================================================================
