@@ -10,7 +10,7 @@ if [[ ! -f "$ENV_FILE" ]]; then
     exit 0
 fi
 
-source "$ENV_FILE"
+OPENROUTER_MGMT_KEY=$(grep '^OPENROUTER_MGMT_KEY=' "$ENV_FILE" | cut -d'=' -f2-)
 
 if [[ -z "$OPENROUTER_MGMT_KEY" ]]; then
     echo '{"text": "??", "tooltip": "Missing OPENROUTER_MGMT_KEY", "class": "error"}'
