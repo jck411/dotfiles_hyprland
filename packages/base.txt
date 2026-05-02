@@ -55,6 +55,7 @@ firefox
 # =============================================================================
 mpv
 gthumb
+snapshot
 spotify                            # [AUR]
 spicetify-cli                      # [AUR]
 spicetify-themes-git               # [AUR]
