@@ -56,7 +56,6 @@ extracted into host profiles so the same dotfiles work across different hardware
 | Profile | Description |
 |---------|-------------|
 | `default.conf` | Safe fallback for any machine |
-| `dell-xps-13.conf` | Dell XPS 13 — Intel Iris, 3200x1800 HiDPI |
 | `thinkpad-p16s-gen4.conf` | ThinkPad P16s Gen 4 — AMD Ryzen AI 9, Radeon, 1920x1200 |
 
 ## How It Works
@@ -130,14 +129,12 @@ Package lists live in `packages/` — one base list plus per-host extras:
 | File | Description |
 |------|-------------|
 | `packages/base.txt` | Apps every machine needs (hyprland, waybar, foot, etc.) |
-| `packages/dell-xps-13.txt` | Intel microcode, thermald, etc. |
 | `packages/thinkpad-p16s-gen4.txt` | AMD microcode, smartcard support, etc. |
 
 Use `packages.sh` to compare declared packages against what's actually installed:
 
 ```bash
 ./packages.sh                          # Status for current host (auto-detected)
-./packages.sh status dell-xps-13       # Status for specific host
 ./packages.sh install                  # Show & optionally install missing packages
 ./packages.sh export                   # Dump installed packages to a file
 ./packages.sh hosts                    # List available host profiles

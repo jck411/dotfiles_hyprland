@@ -13,7 +13,7 @@ Configuration-only dotfiles repo for EndeavourOS (Arch) + Hyprland (Wayland). Ma
 
 - Machine repos (`machine-dell-xps13`, etc.) are the entry points — this repo is edited from there
 - Host profiles: `packages/<host>.txt` for packages, `config/hypr/hosts/<host>.conf` for Hyprland overrides
-- Active hosts: `dell-xps-13`, `thinkpad-p16s-gen4`
+- Active hosts: `thinkpad-p16s-gen4`
 - Machine-specific values NEVER go in `hyprland.conf` — use `config/hypr/hosts/`
 - New app = add to `packages/base.txt` (or host list) + config to `config/` in one commit
 - Package lists in `packages/` pair with configs — keep them in sync
