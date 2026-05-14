@@ -24,5 +24,10 @@ export MOZ_ENABLE_WAYLAND=1
 export MOZ_ACCELERATED=1
 
 . "$HOME/.local/bin/env"
+if [ -f "$HOME/REPOS/symlinked-env/.env" ]; then
+  set -a
+  . "$HOME/REPOS/symlinked-env/.env"
+  set +a
+fi
 bash ~/.config/scripts/check-updates.sh
 export PATH="/opt/Antigravity:$PATH"
