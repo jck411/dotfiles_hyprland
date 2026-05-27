@@ -154,6 +154,7 @@ rclone
 restic
 unrar
 unzip
+file-roller
 plocate
 inxi
 duf
