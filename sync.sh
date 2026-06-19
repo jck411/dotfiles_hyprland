@@ -27,6 +27,7 @@ IGNORE_LIST=(
     "Cursor"
     "Electron"
     "dconf"
+    "google-chrome"
     "gh"
     "go"
     "pulse"

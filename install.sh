@@ -38,6 +38,7 @@ CONFIG_DIRS=(
 # Standalone config files (symlinked to ~/.config/<file>)
 CONFIG_FILES=(
     "brave-flags.conf"
+    "chrome-flags.conf"
     "code-flags.conf"
     "cursor-flags.conf"
     "electron-flags.conf"
@@ -191,7 +192,7 @@ install_single() {
         hypr|waybar|foot|foot-quake|swappy|rofi|mako|gtk-3.0|gtk-4.0|Thunar|mpv|networkmanager-dmenu|nwg-displays|xdg-desktop-portal|scripts)
             install_config_dir "$component"
             ;;
-        brave-flags.conf|code-flags.conf|cursor-flags.conf|electron-flags.conf|power-settings.conf)
+        brave-flags.conf|chrome-flags.conf|code-flags.conf|cursor-flags.conf|electron-flags.conf|power-settings.conf)
             install_config_file "$component"
             ;;
         bashrc|.bashrc)
@@ -268,7 +269,7 @@ show_help() {
     echo "  xdg-desktop-portal, scripts"
     echo ""
     echo "Standalone files:"
-    echo "  brave-flags.conf, code-flags.conf, cursor-flags.conf,"
+    echo "  brave-flags.conf, chrome-flags.conf, code-flags.conf, cursor-flags.conf,"
     echo "  electron-flags.conf, power-settings.conf"
     echo ""
     echo "Other:"
