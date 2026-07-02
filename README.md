@@ -21,7 +21,7 @@ This repo **only manages configuration files** via symlinks. It does not install
 | Component | Description |
 |-----------|-------------|
 | `hypr/` | Hyprland window manager config |
-| `waybar/` | Status bar config, scripts, and styling |
+| `waybar/` | Status bar config, styling, and click menus for common system controls |
 | `foot/` | Terminal emulator config |
 | `foot-quake/` | Drop-down quake-style terminal |
 | `swappy/` | Screenshot editor, save location, and clipboard copy |
