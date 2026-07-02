@@ -69,8 +69,20 @@ device_icon() {
 
 device_battery() {
     device_info "$1" |
-        sed -n 's/.*(\([0-9][0-9]*\)).*/ \1%/p' |
-        head -1
+        awk '
+            /Battery Percentage/ {
+                if ($0 ~ /\([0-9]+\)/) {
+                    sub(/^.*\(/, "")
+                    sub(/\).*$/, "")
+                } else {
+                    gsub(/[^0-9]/, "")
+                }
+                if ($0 != "") {
+                    printf " %s%%", $0
+                }
+                exit
+            }
+        '
 }
 
 mac_from_choice() {
