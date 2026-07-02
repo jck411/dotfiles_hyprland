@@ -26,5 +26,8 @@ ccid
 opensc
 pcsc-tools
 
+# Windows install media tooling (split install.wim for FAT32 USBs)
+wimlib
+
 # Plex desktop client
 plex-desktop                         # [AUR]
