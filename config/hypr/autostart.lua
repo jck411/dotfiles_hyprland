@@ -1,0 +1,11 @@
+-- Start desktop services once per Hyprland session.
+hl.on("hyprland.start", function()
+    hl.exec_cmd("awww-daemon")
+    hl.exec_cmd("~/.config/hypr/wallpaper.sh")
+    hl.exec_cmd("waybar")
+    hl.exec_cmd("~/.config/scripts/dock-monitor.sh")
+    hl.exec_cmd("mako")
+    hl.exec_cmd("brightnessctl set 80%")
+    hl.exec_cmd("thunar --daemon")
+    hl.exec_cmd("wl-paste --watch cliphist store")
+end)

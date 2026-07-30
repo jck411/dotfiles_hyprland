@@ -1,22 +1,14 @@
 #!/bin/bash
-# System update — official + AUR packages via yay
 
-echo "╔════════════════════════════════════════╗"
-echo "║         System Update                  ║"
-echo "╚════════════════════════════════════════╝"
-echo
+# Thin entry point for the machine's canonical unattended updater.
 
-yay -Syu
+set -e
 
-# Update timestamp regardless of partial AUR failures
-date +%s > ~/.config/last_update_timestamp
+UPDATER="$HOME/REPOS/machine-thinkpad-p16s/scripts/system-update.sh"
 
-echo -e "\n✓ System update complete"
+if [ ! -x "$UPDATER" ]; then
+    echo "Error: machine updater not found or not executable: $UPDATER" >&2
+    exit 1
+fi
 
-# Check Downloads for any tarball updates (sudo already cached from yay)
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-echo ""
-echo "╔════════════════════════════════════════╗"
-echo "║         Tarball Updates                ║"
-echo "╚════════════════════════════════════════╝"
-"$SCRIPT_DIR/update-tarballs.sh"
+exec "$UPDATER"

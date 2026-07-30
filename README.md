@@ -2,7 +2,10 @@
 
 Personal dotfiles for EndeavourOS with Hyprland (Wayland) and Nord theme.
 
-This repo **only manages configuration files** via symlinks. It does not install packages, manage dependencies, or track app data. Install apps with `yay`/`pacman` first, then use this repo to manage their configs.
+This repo owns shared configuration and package declarations. Configs are
+managed through symlinks; machine-specific setup and system orchestration stay
+in the machine repo. Maintenance entry points here delegate to that control
+plane.
 
 ## System Info
 
@@ -36,7 +39,7 @@ This repo **only manages configuration files** via symlinks. It does not install
 | `nwg-displays/` | Display configuration GUI |
 | `xdg-desktop-portal/` | Wayland portal config |
 | `scripts/` | System maintenance scripts |
-| `shell/` | Shell configs (.bashrc, .zshrc, .Xresources) |
+| `shell/` | Shell configs (.bash_profile, .bashrc, .zshrc, .Xresources) |
 
 ### Standalone Config Files
 
@@ -54,16 +57,20 @@ This repo **only manages configuration files** via symlinks. It does not install
 Machine-specific settings (GPU drivers, monitor config, cursor size) are
 extracted into host profiles so the same dotfiles work across different hardware:
 
+Hyprland loads the modular `hyprland.lua` entry point explicitly through the
+tracked Bash login profile, avoiding the legacy `.conf` format.
+
 | Profile | Description |
 |---------|-------------|
-| `default.conf` | Safe fallback for any machine |
-| `thinkpad-p16s-gen4.conf` | ThinkPad P16s Gen 4 — AMD Ryzen AI 9, Radeon, 1920x1200 |
+| `default.lua` | Safe fallback for any machine |
+| `thinkpad-p16s-gen4.lua` | ThinkPad P16s Gen 4 — AMD Ryzen AI 9, Radeon, 1920x1200 |
 
 ## How It Works
 
 ```
 ~/.config/hypr/ ──symlink──▶ ~/REPOS/dotfiles_hyprland/config/hypr/
 ~/.config/waybar/ ──symlink──▶ ~/REPOS/dotfiles_hyprland/config/waybar/
+~/.bash_profile ──symlink──▶ ~/REPOS/dotfiles_hyprland/shell/.bash_profile
 ~/.bashrc ──symlink──▶ ~/REPOS/dotfiles_hyprland/shell/.bashrc
 ```
 
@@ -98,7 +105,7 @@ During install you'll be prompted to select a host profile for your machine.
 
 ### Adding a New Machine
 ```bash
-cp config/hypr/hosts/default.conf config/hypr/hosts/my-laptop.conf
+cp config/hypr/hosts/default.lua config/hypr/hosts/my-laptop.lua
 # Edit with your GPU, monitor, and cursor settings
 ./install.sh host    # Select the new profile
 ```
@@ -140,6 +147,14 @@ Use `packages.sh` to compare declared packages against what's actually installed
 ./packages.sh export                   # Dump installed packages to a file
 ./packages.sh hosts                    # List available host profiles
 ```
+
+## System Updates
+
+`~/.config/scripts/update-system.sh` delegates to the machine repo's canonical
+updater. It updates official and AUR packages without confirmation prompts,
+records success only after a clean exit, and logs results under
+`~/.local/state/machine-update/`. The weekly update check starts an overdue
+update directly instead of asking for confirmation.
 
 ### Workflow: Adding a New App
 

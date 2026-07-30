@@ -11,7 +11,7 @@ hyprlock
 waybar
 rofi
 mako
-swww
+awww
 xdg-desktop-portal-hyprland
 nwg-displays
 socat
@@ -31,6 +31,8 @@ man-pages
 thunar
 thunar-archive-plugin
 thunar-volman
+tumbler
+ffmpegthumbnailer
 gvfs
 
 # =============================================================================
@@ -40,7 +42,7 @@ mousepad
 visual-studio-code-insiders-bin    # [AUR]
 cursor-bin                         # [AUR]
 opencode-desktop-bin               # [AUR] desktop (Tauri/webkit2gtk, Wayland-native) + bundles CLI at /usr/bin/opencode-cli
-antigravity                        # [MANUAL] tarball from antigravity.google — installed to /opt/Antigravity/
+antigravity                        # [AUR]
 nano
 nano-syntax-highlighting
 

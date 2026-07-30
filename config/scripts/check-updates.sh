@@ -1,103 +1,41 @@
 #!/bin/bash
 
-CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-TIMESTAMP_FILE="$CONFIG_HOME/last_update_timestamp"
-UPDATE_SCRIPT="$CONFIG_HOME/scripts/update-system.sh"
-PACMAN_LOG="/var/log/pacman.log"
+set -e
+
+STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+SUCCESS_FILE="$STATE_HOME/machine-update/last-success"
+STATUS_FILE="$STATE_HOME/machine-update/status"
+UPDATE_SCRIPT="${XDG_CONFIG_HOME:-$HOME/.config}/scripts/update-system.sh"
 UPDATE_INTERVAL_SECONDS=604800
 
-# Only run if attached to a terminal
+# Do not start a large update from a noninteractive shell.
 if [ ! -t 0 ]; then
     exit 0
 fi
 
-read_timestamp_file() {
-    local timestamp
+LAST_SUCCESS="$(cat "$SUCCESS_FILE" 2>/dev/null || true)"
+CURRENT_TIME="$(date +%s)"
+UPDATE_STATE="$(sed -n 's/^state=//p' "$STATUS_FILE" 2>/dev/null || true)"
 
-    if [ ! -f "$TIMESTAMP_FILE" ]; then
-        return 1
-    fi
-
-    timestamp=$(cat "$TIMESTAMP_FILE" 2>/dev/null)
-    if [[ "$timestamp" =~ ^[0-9]+$ ]]; then
-        echo "$timestamp"
-        return 0
-    fi
-
-    return 1
-}
-
-latest_pacman_update() {
-    local timestamp
-
-    if [ ! -r "$PACMAN_LOG" ]; then
-        return 1
-    fi
-
-    timestamp=$(awk '
-        /\[PACMAN\] Running '\''pacman / {
-            if ($0 ~ / -S[^ ]*u/ || ($0 ~ / -S / && $0 ~ / -u /)) {
-                latest = substr($0, 2, 24)
-            }
-        }
-        END {
-            if (latest != "") {
-                print latest
-            }
-        }
-    ' "$PACMAN_LOG")
-
-    if [ -n "$timestamp" ]; then
-        date -d "$timestamp" +%s 2>/dev/null
-        return $?
-    fi
-
-    return 1
-}
-
-remember_update() {
-    mkdir -p "$(dirname "$TIMESTAMP_FILE")" 2>/dev/null || return 0
-    printf '%s\n' "$1" > "$TIMESTAMP_FILE" 2>/dev/null || true
-}
-
-last_update_timestamp() {
-    local remembered=0
-    local pacman_update=0
-
-    remembered=$(read_timestamp_file || echo 0)
-    pacman_update=$(latest_pacman_update || echo 0)
-
-    if [ "$pacman_update" -gt "$remembered" ]; then
-        remember_update "$pacman_update"
-        echo "$pacman_update"
-    elif [ "$remembered" -gt 0 ]; then
-        echo "$remembered"
-    else
-        return 1
-    fi
-}
-
-LAST_UPDATE=$(last_update_timestamp || true)
-CURRENT_TIME=$(date +%s)
-
-if [ -n "$LAST_UPDATE" ]; then
-    DIFF=$((CURRENT_TIME - LAST_UPDATE))
-
-    if [ "$DIFF" -gt "$UPDATE_INTERVAL_SECONDS" ]; then
+case "$UPDATE_STATE" in
+    failed)
+        UPDATE_LOG="$(sed -n 's/^log=//p' "$STATUS_FILE" 2>/dev/null || true)"
         echo
-        echo -e "\033[1;33mWARNING: It has been over a week since your last system update.\033[0m"
-        read -p "Would you like to run the update and cleanup now? (y/n) " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            bash "$UPDATE_SCRIPT"
-        fi
-    fi
-else
-    echo
-    echo -e "\033[1;33mNo system update timestamp found.\033[0m"
-    read -p "Would you like to run the initial system update and cleanup now? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        bash "$UPDATE_SCRIPT"
-    fi
+        echo -e "\033[1;31mThe last system update failed; automatic retry is paused.\033[0m"
+        echo "Fix the reported error, then run: $UPDATE_SCRIPT"
+        [ -n "$UPDATE_LOG" ] && echo "Log: $UPDATE_LOG"
+        exit 0
+        ;;
+    running)
+        exit 0
+        ;;
+esac
+
+if [[ "$LAST_SUCCESS" =~ ^[0-9]+$ ]] &&
+   [ $((CURRENT_TIME - LAST_SUCCESS)) -le "$UPDATE_INTERVAL_SECONDS" ]; then
+    exit 0
 fi
+
+echo
+echo -e "\033[1;33mSystem update is due; starting it noninteractively.\033[0m"
+exec "$UPDATE_SCRIPT"

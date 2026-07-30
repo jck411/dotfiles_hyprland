@@ -47,9 +47,15 @@ CONFIG_FILES=(
 
 # Files in home directory
 HOME_FILES=(
+    ".bash_profile"
     ".bashrc"
     ".zshrc"
     ".Xresources"
+)
+
+# Desktop overrides in ~/.local/share
+LOCAL_SHARE_FILES=(
+    "local/share/applications/antigravity.desktop"
 )
 
 print_header() {
@@ -111,9 +117,17 @@ install_config_file() {
     create_symlink "$source" "$target"
 }
 
+install_local_share_file() {
+    local file="$1"
+    local source="$DOTFILES_DIR/config/$file"
+    local target="$HOME/.$file"
+
+    create_symlink "$source" "$target"
+}
+
 select_host() {
     local hosts_dir="$DOTFILES_DIR/config/hypr/hosts"
-    local host_link="$DOTFILES_DIR/config/hypr/host.conf"
+    local host_link="$DOTFILES_DIR/config/hypr/host.lua"
     
     if [ ! -d "$hosts_dir" ]; then
         echo -e "${YELLOW}No host profiles found${NC}"
@@ -123,9 +137,9 @@ select_host() {
     echo -e "${BLUE}Available host profiles:${NC}"
     local i=1
     local profiles=()
-    for profile in "$hosts_dir"/*.conf; do
+    for profile in "$hosts_dir"/*.lua; do
         [ -f "$profile" ] || continue
-        local name=$(basename "$profile" .conf)
+        local name=$(basename "$profile" .lua)
         profiles+=("$name")
         local desc=$(head -2 "$profile" | grep "^#" | tail -1 | sed 's/^# *//')
         echo "  $i) $name${desc:+ - $desc}"
@@ -149,7 +163,7 @@ select_host() {
     local selected="${profiles[$((choice-1))]}"
     
     # Create relative symlink within the repo
-    ln -sf "hosts/${selected}.conf" "$host_link"
+    ln -sf "hosts/${selected}.lua" "$host_link"
     echo -e "${GREEN}✓ Host profile:${NC} $selected"
 }
 
@@ -176,6 +190,12 @@ install_all() {
     for file in "${HOME_FILES[@]}"; do
         install_home_file "$file"
     done
+
+    echo ""
+    echo -e "${BLUE}Installing desktop overrides...${NC}"
+    for file in "${LOCAL_SHARE_FILES[@]}"; do
+        install_local_share_file "$file"
+    done
     
     echo ""
     echo -e "${GREEN}✓ Installation complete!${NC}"
@@ -194,6 +214,12 @@ install_single() {
             ;;
         brave-flags.conf|chrome-flags.conf|code-flags.conf|cursor-flags.conf|electron-flags.conf|power-settings.conf)
             install_config_file "$component"
+            ;;
+        antigravity.desktop)
+            install_local_share_file "local/share/applications/antigravity.desktop"
+            ;;
+        bash-profile|.bash_profile)
+            install_home_file ".bash_profile"
             ;;
         bashrc|.bashrc)
             install_home_file ".bashrc"
@@ -272,8 +298,11 @@ show_help() {
     echo "  brave-flags.conf, chrome-flags.conf, code-flags.conf, cursor-flags.conf,"
     echo "  electron-flags.conf, power-settings.conf"
     echo ""
+    echo "Desktop overrides:"
+    echo "  antigravity.desktop"
+    echo ""
     echo "Other:"
-    echo "  shell            All shell configs (.bashrc, .zshrc, .Xresources)"
+    echo "  shell            All shell configs (.bash_profile, .bashrc, .zshrc, .Xresources)"
     echo "  host             Select host profile (GPU, monitor, cursor size)"
     echo ""
     echo "Examples:"

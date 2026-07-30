@@ -57,12 +57,12 @@ get_declared_packages() {
 
 # Detect current host from symlink
 detect_host() {
-    local host_link="$DOTFILES_DIR/config/hypr/host.conf"
+    local host_link="$DOTFILES_DIR/config/hypr/host.lua"
     if [ -L "$host_link" ]; then
         local target
         target=$(readlink "$host_link")
-        # Extract host name from "hosts/foo.conf"
-        basename "$target" .conf
+        # Extract host name from "hosts/foo.lua"
+        basename "$target" .lua
     else
         echo "unknown"
     fi
@@ -258,7 +258,7 @@ show_help() {
     echo "  hosts            List available host profiles"
     echo "  help             Show this help"
     echo ""
-    echo "If HOST is omitted, it's auto-detected from config/hypr/host.conf symlink."
+    echo "If HOST is omitted, it's auto-detected from config/hypr/host.lua symlink."
     echo ""
     echo "Examples:"
     echo "  ./packages.sh                          # Status for current host"

@@ -5,7 +5,7 @@
 .DS_Store
 
 # Host profile symlink (machine-specific, created by install.sh)
-config/hypr/host.conf
+config/hypr/host.lua
 
 # Don't track Brave/Code/Cursor - these are app data, not configs
 BraveSoftware/

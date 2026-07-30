@@ -36,6 +36,9 @@ IGNORE_LIST=(
     "spotify"
     "yay"
     "inkscape"
+
+    # Managed outside ~/.config
+    "local"
     
     # Repo files
     ".git"
@@ -49,7 +52,6 @@ IGNORE_LIST=(
     "reflector-simple-free-params.txt"
     
     # Auto-generated / trivial
-    "last_update_timestamp"
     "pavucontrol.ini"
     "mimeapps.list"
     "Mousepad"
@@ -87,6 +89,8 @@ check_orphaned() {
         [ -e "$item" ] || continue
         local name=$(basename "$item")
         local target="$CONFIG_DIR/$name"
+
+        is_ignored "$name" && continue
         
         if [ ! -e "$target" ]; then
             echo -e "  ${RED}✗${NC} $name - ${YELLOW}not on system${NC}"
@@ -198,6 +202,8 @@ fix_symlinks() {
         [ -e "$item" ] || continue
         local name=$(basename "$item")
         local target="$CONFIG_DIR/$name"
+
+        is_ignored "$name" && continue
         
         if [ -e "$target" ] && [ ! -L "$target" ]; then
             # Backup and replace
@@ -272,6 +278,8 @@ status_check() {
         [ -e "$item" ] || continue
         local name=$(basename "$item")
         local target="$CONFIG_DIR/$name"
+
+        is_ignored "$name" && continue
         
         if [ -L "$target" ]; then
             echo -e "  ${GREEN}✓${NC} $name"
