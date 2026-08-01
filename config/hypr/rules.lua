@@ -1,9 +1,4 @@
--- Application placement and dialog behavior.
-hl.window_rule({
-    name = "thunar-workspace",
-    match = { class = "^(thunar)$" },
-    workspace = "5 silent",
-})
+-- Dialog behavior.
 
 hl.window_rule({
     name = "network-connection-editor",

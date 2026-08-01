@@ -59,6 +59,8 @@ extracted into host profiles so the same dotfiles work across different hardware
 
 Hyprland loads the modular `hyprland.lua` entry point explicitly through the
 tracked Bash login profile, avoiding the legacy `.conf` format.
+Application launch bindings open on the active workspace; explicit layout
+scripts own any fixed window placement they need.
 
 | Profile | Description |
 |---------|-------------|
