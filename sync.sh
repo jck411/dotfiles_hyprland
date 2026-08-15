@@ -21,7 +21,6 @@ NC='\033[0m'
 # Configs to always ignore (app data, caches, sensitive, too large)
 IGNORE_LIST=(
     # Large app data / caches
-    "Antigravity"
     "BraveSoftware"
     "Code - Insiders"
     "Cursor"

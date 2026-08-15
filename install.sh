@@ -53,11 +53,6 @@ HOME_FILES=(
     ".Xresources"
 )
 
-# Desktop overrides in ~/.local/share
-LOCAL_SHARE_FILES=(
-    "local/share/applications/antigravity.desktop"
-)
-
 print_header() {
     echo -e "${BLUE}"
     echo "╔════════════════════════════════════════╗"
@@ -114,14 +109,6 @@ install_config_file() {
     local source="$DOTFILES_DIR/config/$file"
     local target="$CONFIG_DIR/$file"
     
-    create_symlink "$source" "$target"
-}
-
-install_local_share_file() {
-    local file="$1"
-    local source="$DOTFILES_DIR/config/$file"
-    local target="$HOME/.$file"
-
     create_symlink "$source" "$target"
 }
 
@@ -192,12 +179,6 @@ install_all() {
     done
 
     echo ""
-    echo -e "${BLUE}Installing desktop overrides...${NC}"
-    for file in "${LOCAL_SHARE_FILES[@]}"; do
-        install_local_share_file "$file"
-    done
-    
-    echo ""
     echo -e "${GREEN}✓ Installation complete!${NC}"
     
     if [ -d "$BACKUP_DIR" ]; then
@@ -214,9 +195,6 @@ install_single() {
             ;;
         brave-flags.conf|chrome-flags.conf|code-flags.conf|cursor-flags.conf|electron-flags.conf|power-settings.conf)
             install_config_file "$component"
-            ;;
-        antigravity.desktop)
-            install_local_share_file "local/share/applications/antigravity.desktop"
             ;;
         bash-profile|.bash_profile)
             install_home_file ".bash_profile"
@@ -297,9 +275,6 @@ show_help() {
     echo "Standalone files:"
     echo "  brave-flags.conf, chrome-flags.conf, code-flags.conf, cursor-flags.conf,"
     echo "  electron-flags.conf, power-settings.conf"
-    echo ""
-    echo "Desktop overrides:"
-    echo "  antigravity.desktop"
     echo ""
     echo "Other:"
     echo "  shell            All shell configs (.bash_profile, .bashrc, .zshrc, .Xresources)"

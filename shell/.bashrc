@@ -25,4 +25,3 @@ export MOZ_ACCELERATED=1
 
 . "$HOME/.local/bin/env"
 bash ~/.config/scripts/check-updates.sh
-export PATH="/opt/Antigravity:$PATH"
