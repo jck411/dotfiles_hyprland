@@ -25,6 +25,7 @@ IGNORE_LIST=(
     "Code - Insiders"
     "Cursor"
     "Electron"
+    "Hermes"
     "dconf"
     "google-chrome"
     "gh"

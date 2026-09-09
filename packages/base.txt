@@ -42,6 +42,7 @@ mousepad
 visual-studio-code-insiders-bin    # [AUR]
 cursor-bin                         # [AUR]
 opencode-desktop-bin               # [AUR] desktop (Tauri/webkit2gtk, Wayland-native) + bundles CLI at /usr/bin/opencode-cli
+# [MANUAL] Hermes Desktop — machine-thinkpad-p16s/scripts/install-hermes-desktop.sh
 nano
 nano-syntax-highlighting
 
