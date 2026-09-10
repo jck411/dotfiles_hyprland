@@ -7,6 +7,8 @@ managed through symlinks; machine-specific setup and system orchestration stay
 in the machine repo. Maintenance entry points here delegate to that control
 plane.
 
+Repository-wide agent instructions live in the root [AGENTS.md](AGENTS.md).
+
 ## System Info
 
 - **OS**: EndeavourOS (Arch-based)
@@ -124,14 +126,6 @@ Use `sync.sh` to manage configs beyond the core set:
 ./sync.sh interactive    # Interactive menu
 ```
 
-### Workflow: Adding a New App Config
-```bash
-yay -S neovim              # 1. Install the app
-# Configure it...           # 2. Use and customize
-./sync.sh add nvim         # 3. Move config to repo + create symlink
-git add -A && git commit   # 4. Commit to version control
-```
-
 ## Package Management
 
 Package lists live in `packages/` — one base list plus per-host extras:
@@ -160,19 +154,10 @@ update directly instead of asking for confirmation.
 
 ### Workflow: Adding a New App
 
-```bash
-# 1. Add package to the appropriate list
-echo "neovim" >> packages/base.txt
-
-# 2. Install it
-./packages.sh install
-
-# 3. Configure it, then track the config
-./sync.sh add nvim
-
-# 4. Commit everything together
-git add -A && git commit -m "Add neovim"
-```
+Ask the agent to install and configure the app through the
+[machine install workflow](../machine-thinkpad-p16s/docs/AI_PLAYBOOK.md).
+Keep its package declaration and relevant shareable configuration together;
+credentials and app data stay private.
 
 ## Security
 

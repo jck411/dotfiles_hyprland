@@ -42,7 +42,7 @@ IGNORE_LIST=(
     
     # Repo files
     ".git"
-    ".github"
+    "AGENTS.md"
     ".gitignore"
     "README.md"
     
