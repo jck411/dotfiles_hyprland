@@ -41,7 +41,6 @@ gvfs
 mousepad
 visual-studio-code-insiders-bin    # [AUR]
 cursor-bin                         # [AUR]
-# [MANUAL] Hermes Desktop — machine-thinkpad-p16s/scripts/install-hermes-desktop.sh
 nano
 nano-syntax-highlighting
 
