@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Thin entry point for the machine's canonical unattended updater.
+# Terminal entry point for the machine's reviewed updater.
 
 set -e
 

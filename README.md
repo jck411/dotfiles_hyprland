@@ -147,10 +147,9 @@ Use `packages.sh` to compare declared packages against what's actually installed
 ## System Updates
 
 `~/.config/scripts/update-system.sh` delegates to the machine repo's canonical
-updater. It updates official and AUR packages without confirmation prompts,
-records success only after a clean exit, and logs results under
-`~/.local/state/machine-update/`. The weekly update check starts an overdue
-update directly instead of asking for confirmation.
+updater. AUR changes require review in a terminal; unattended AUR installs are
+refused. The weekly shell check only reminds. Follow the
+[package update workflow](../machine-thinkpad-p16s/docs/package-updates.md).
 
 ### Workflow: Adding a New App
 

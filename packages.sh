@@ -2,7 +2,7 @@
 
 # Package Sync Script
 # Compares declared package lists against what's actually installed.
-# Does NOT install or remove anything — shows you what's missing/extra.
+# The install command adds missing packages after review; status is read-only.
 
 set -e
 
@@ -200,8 +200,13 @@ install_missing() {
     fi
     if [ ${#aur_pkgs[@]} -gt 0 ]; then
         echo -e "${BLUE}AUR (via yay):${NC}"
-        echo -e "  yay -S ${aur_pkgs[*]}"
+        echo -e "  yay -S --confirm --diffmenu --answerdiff All ${aur_pkgs[*]}"
         echo ""
+    fi
+
+    if [ ${#aur_pkgs[@]} -gt 0 ] && { [ "$noninteractive" = "1" ] || [ ! -t 0 ]; }; then
+        echo -e "${RED}AUR packages require terminal review; no packages were installed.${NC}" >&2
+        return 2
     fi
 
     if [ "$noninteractive" = "1" ]; then
@@ -209,10 +214,6 @@ install_missing() {
         if [ ${#repo_pkgs[@]} -gt 0 ]; then
             echo -e "${BLUE}Installing repo packages (non-interactive)...${NC}"
             sudo pacman -S --needed --noconfirm "${repo_pkgs[@]}"
-        fi
-        if [ ${#aur_pkgs[@]} -gt 0 ]; then
-            echo -e "${BLUE}Installing AUR packages (non-interactive)...${NC}"
-            yay -S --needed --noconfirm "${aur_pkgs[@]}"
         fi
         echo -e "${GREEN}✓ Done${NC}"
     else
@@ -224,11 +225,12 @@ install_missing() {
             fi
             if [ ${#aur_pkgs[@]} -gt 0 ]; then
                 echo -e "${BLUE}Installing AUR packages...${NC}"
-                yay -S --needed "${aur_pkgs[@]}"
+                yay -S --needed --confirm --diffmenu --answerdiff All \
+                    --noanswerclean --noansweredit --sudo sudo "${aur_pkgs[@]}"
             fi
             echo -e "${GREEN}✓ Done${NC}"
         else
-            echo -e "${YELLOW}Skipped. Copy the commands above to install manually.${NC}"
+            echo -e "${YELLOW}Skipped. Ask the agent to review and install these packages.${NC}"
         fi
     fi
 }

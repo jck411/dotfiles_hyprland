@@ -21,7 +21,7 @@ case "$UPDATE_STATE" in
     failed)
         UPDATE_LOG="$(sed -n 's/^log=//p' "$STATUS_FILE" 2>/dev/null || true)"
         echo
-        echo -e "\033[1;31mThe last system update failed; automatic retry is paused.\033[0m"
+        echo -e "\033[1;31mThe last system update did not complete.\033[0m"
         echo "Fix the reported error, then run: $UPDATE_SCRIPT"
         [ -n "$UPDATE_LOG" ] && echo "Log: $UPDATE_LOG"
         exit 0
@@ -37,5 +37,5 @@ if [[ "$LAST_SUCCESS" =~ ^[0-9]+$ ]] &&
 fi
 
 echo
-echo -e "\033[1;33mSystem update is due; starting it noninteractively.\033[0m"
-exec "$UPDATE_SCRIPT"
+echo -e "\033[1;33mSystem update is due. Ask the agent to review and apply it.\033[0m"
+echo "Terminal updater: $UPDATE_SCRIPT"

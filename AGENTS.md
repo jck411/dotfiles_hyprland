@@ -26,6 +26,8 @@ do not create `.github` configuration or separate Copilot instructions.
   shared Electron flags live in `config/electron-flags.conf`.
 - Use Bash and `set -e` for one-shot scripts; reuse existing color variables.
   Use pacman/yay for system packages and uv for Python.
+- Follow the [package security review](../machine-thinkpad-p16s/docs/package-updates.md).
+  Never bypass AUR build-file review with unattended installation.
 
 ## Privacy and validation
 
