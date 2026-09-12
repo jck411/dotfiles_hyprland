@@ -55,6 +55,7 @@ firefox
 # MESSAGING
 # =============================================================================
 telegram-desktop-bin               # [AUR] official self-contained binaries
+hermes-agent-desktop               # [AUR] Hermes Desktop; remote VM connection
 
 # =============================================================================
 # MEDIA
