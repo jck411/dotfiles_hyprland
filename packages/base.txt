@@ -56,6 +56,7 @@ firefox
 # =============================================================================
 telegram-desktop-bin               # [AUR] official self-contained binaries
 hermes-agent-desktop               # [AUR] Hermes Desktop; remote VM connection
+zoom                               # [AUR] official Zoom Workplace binaries
 
 # =============================================================================
 # MEDIA
