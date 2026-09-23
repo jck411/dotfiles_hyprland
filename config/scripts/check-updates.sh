@@ -37,5 +37,5 @@ if [[ "$LAST_SUCCESS" =~ ^[0-9]+$ ]] &&
 fi
 
 echo
-echo -e "\033[1;33mSystem update is due. Ask the agent to review and apply it.\033[0m"
-echo "Terminal updater: $UPDATE_SCRIPT"
+echo -e "\033[1;33mSystem update is due. Run update-system.sh to apply it without prompts.\033[0m"
+echo "Updater: $UPDATE_SCRIPT"

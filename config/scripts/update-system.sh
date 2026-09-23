@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Terminal entry point for the machine's reviewed updater.
+# Entry point for the machine's unattended updater.
 
 set -e
 
