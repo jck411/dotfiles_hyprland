@@ -28,6 +28,8 @@ do not create `.github` configuration or separate Copilot instructions.
   Use pacman/yay for system packages and uv for Python.
 - Follow the [package security review](../machine-thinkpad-p16s/docs/package-updates.md).
   Routine updates are unattended; review newly declared applications before installation.
+  Route every AUR build through the machine repository's `scripts/aur.sh`; never
+  bypass its sandbox with direct yay or makepkg build commands.
 
 ## Privacy and validation
 

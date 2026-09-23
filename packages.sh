@@ -8,6 +8,7 @@ set -e
 
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PACKAGES_DIR="$DOTFILES_DIR/packages"
+AUR_RUNNER="$DOTFILES_DIR/../machine-thinkpad-p16s/scripts/aur.sh"
 
 # Colors
 RED='\033[0;31m'
@@ -200,7 +201,7 @@ install_missing() {
     fi
     if [ ${#aur_pkgs[@]} -gt 0 ]; then
         echo -e "${BLUE}AUR (via yay):${NC}"
-        echo -e "  yay -S --confirm --diffmenu --answerdiff All ${aur_pkgs[*]}"
+        echo -e "  $AUR_RUNNER -S --confirm --diffmenu --answerdiff All ${aur_pkgs[*]}"
         echo ""
     fi
 
@@ -225,8 +226,8 @@ install_missing() {
             fi
             if [ ${#aur_pkgs[@]} -gt 0 ]; then
                 echo -e "${BLUE}Installing AUR packages...${NC}"
-                yay -S --needed --confirm --diffmenu --answerdiff All \
-                    --noanswerclean --noansweredit --sudo sudo "${aur_pkgs[@]}"
+                "$AUR_RUNNER" -S --needed --confirm --diffmenu --answerdiff All \
+                    --noanswerclean --noansweredit "${aur_pkgs[@]}"
             fi
             echo -e "${GREEN}✓ Done${NC}"
         else

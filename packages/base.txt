@@ -171,6 +171,8 @@ meld
 # =============================================================================
 base
 base-devel
+bubblewrap                         # isolated AUR builds
+slirp4netns                        # sandbox networking
 flatpak
 linux
 linux-firmware
