@@ -78,7 +78,7 @@ close_all() {
 close_all "brave-browser"
 close_all "brave-calendar"
 close_all "code-insiders"
-close_all "spotify"
+close_all "Spotify"
 close_all "thunar"
 
 sleep 1
@@ -136,7 +136,7 @@ sleep 1
 sleep 0.3
 spotify-launcher &>/dev/null &
 disown
-spot_addr=$(wait_for_window "spotify" "") || true
+spot_addr=$(wait_for_window "Spotify" "") || true
 sleep 1
 
 # =============================================================================
