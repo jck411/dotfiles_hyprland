@@ -55,7 +55,6 @@ command("SUPER + V", "code-insiders")
 command("SUPER + P", "nwg-displays")
 command("SUPER + N", "~/.config/waybar/wifi-menu.sh")
 command("SUPER + SHIFT + N", "~/.config/waybar/wifi-menu.sh --toggle")
-command("SUPER + T", "~/.config/scripts/reverse-tether.sh")
 command("SUPER + G", "systemctl --user restart rclone-googledrive.service")
 command("SUPER + SHIFT + D", "~/.config/scripts/dock-layout.sh")
 

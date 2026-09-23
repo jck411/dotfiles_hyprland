@@ -54,7 +54,7 @@ firefox
 # =============================================================================
 # MESSAGING
 # =============================================================================
-telegram-desktop-bin               # [AUR] official self-contained binaries
+telegram-desktop                   # official Arch package
 hermes-agent-desktop               # [AUR] Hermes Desktop; remote VM connection
 zoom                               # [AUR] official Zoom Workplace binaries
 
@@ -64,9 +64,7 @@ zoom                               # [AUR] official Zoom Workplace binaries
 mpv
 gthumb
 guvcview
-spotify                            # [AUR]
-spicetify-cli                      # [AUR]
-spicetify-themes-git               # [AUR]
+spotify-launcher                   # official Arch launcher
 
 # =============================================================================
 # AUDIO / PIPEWIRE
@@ -97,7 +95,6 @@ wget
 iw
 iwd
 android-tools
-gnirehtet                              # [AUR] reverse tethering — share laptop WiFi to phone via USB
 
 # =============================================================================
 # CLIPBOARD & SCREENSHOTS
@@ -201,7 +198,6 @@ libreoffice-fresh
 # SCANNING
 # =============================================================================
 sane-airscan                       # network scanner backend (eSCL/AirScan + WSD)
-brscan4                            # [AUR] SANE driver for Brother network scanners (HL-L2380DW)
 simple-scan                        # GTK scanning GUI
 
 # =============================================================================

@@ -134,7 +134,7 @@ sleep 1
 
 [[ -n "$chat_addr" ]] && hyprctl dispatch focuswindow "address:$chat_addr" 2>/dev/null
 sleep 0.3
-spotify &>/dev/null &
+spotify-launcher &>/dev/null &
 disown
 spot_addr=$(wait_for_window "spotify" "") || true
 sleep 1

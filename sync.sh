@@ -35,7 +35,6 @@ IGNORE_LIST=(
     "go"
     "pulse"
     "rclone"
-    "spicetify"
     "spotify"
     "yay"
     "inkscape"
