@@ -4,7 +4,7 @@
 # Compares declared package lists against what's actually installed.
 # The install command adds missing packages after review; status is read-only.
 
-set -e
+set -eo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PACKAGES_DIR="$DOTFILES_DIR/packages"
@@ -108,7 +108,7 @@ check_packages() {
 
     # Get installed packages
     local installed
-    installed=$(pacman -Qqe | sort -u)
+    installed=$(pacman -Qq | sort -u)
 
     # Missing: declared but not installed
     local missing
@@ -116,7 +116,9 @@ check_packages() {
 
     # Extra: installed but not declared
     local extra
-    extra=$(comm -13 <(echo "$declared") <(echo "$installed"))
+    local explicit
+    explicit=$(pacman -Qqe | sort -u)
+    extra=$(comm -13 <(echo "$declared") <(echo "$explicit"))
 
     # Present: in both
     local present
@@ -125,7 +127,7 @@ check_packages() {
     local total_declared
     total_declared=$(echo "$declared" | wc -l)
     local total_present
-    total_present=$(echo "$present" | grep -c . || echo 0)
+    total_present=$(echo "$present" | grep -c . || true)
 
     echo -e "${BOLD}${CYAN}=== Package Status ===${NC}"
     echo -e "  Declared: $total_declared  |  Installed: $(echo "$installed" | wc -l)  |  Matched: $total_present"
@@ -148,8 +150,8 @@ check_packages() {
     if [ -n "$extra" ]; then
         local extra_count
         extra_count=$(echo "$extra" | wc -l)
-        echo -e "${BOLD}${YELLOW}=== Extra Packages ($extra_count) ===${NC}"
-        echo -e "${YELLOW}Installed but not in your package lists:${NC}"
+        echo -e "${BOLD}${YELLOW}=== Undeclared Explicit Packages ($extra_count) ===${NC}"
+        echo -e "${YELLOW}Informational: explicitly installed outside your lists; not a removal list:${NC}"
         echo "$extra" | while read -r pkg; do
             echo -e "  ${YELLOW}?${NC} $pkg"
         done
@@ -157,6 +159,10 @@ check_packages() {
     else
         echo -e "${GREEN}✓ No extra packages outside your lists${NC}"
         echo ""
+    fi
+    if [ -n "$missing" ]; then
+        echo "Ask the agent to review and install missing declarations."
+        return 1
     fi
 }
 
@@ -172,7 +178,7 @@ install_missing() {
     local declared
     declared=$(get_declared_packages "$host" | sort -u)
     local installed
-    installed=$(pacman -Qqe | sort -u)
+    installed=$(pacman -Qq | sort -u)
     local missing
     missing=$(comm -23 <(echo "$declared") <(echo "$installed"))
 

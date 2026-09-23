@@ -26,6 +26,15 @@ IGNORE_LIST=(
     "Cursor"
     "Electron"
     "Hermes"
+    "ai.opencode.desktop"
+    "opencode"
+    "obsidian"
+    "mozilla"
+    "google-chrome-for-testing"
+    "cloudflared"
+    "codex"
+    "immich"
+    "*.env"
     "zoom"
     "zoomus.conf"
     "zoom.conf"
@@ -75,43 +84,16 @@ print_header() {
 is_ignored() {
     local name="$1"
     for ignore in "${IGNORE_LIST[@]}"; do
-        if [[ "$name" == "$ignore" ]]; then
+        if [[ "$name" == $ignore ]]; then
             return 0
         fi
     done
     return 1
 }
 
-# Check for orphaned configs (in repo but not symlinked)
-check_orphaned() {
-    echo -e "${BOLD}${CYAN}=== Orphaned Configs (in repo, not on system) ===${NC}"
-    local found=0
-    
-    for item in "$DOTFILES_DIR/config/"*; do
-        [ -e "$item" ] || continue
-        local name=$(basename "$item")
-        local target="$CONFIG_DIR/$name"
-
-        is_ignored "$name" && continue
-        
-        if [ ! -e "$target" ]; then
-            echo -e "  ${RED}✗${NC} $name - ${YELLOW}not on system${NC}"
-            found=1
-        elif [ ! -L "$target" ]; then
-            echo -e "  ${YELLOW}⚠${NC} $name - ${YELLOW}exists but not symlinked${NC}"
-            found=1
-        fi
-    done
-    
-    if [ $found -eq 0 ]; then
-        echo -e "  ${GREEN}✓ All repo configs are properly symlinked${NC}"
-    fi
-    echo ""
-}
-
 # Check for untracked configs (on system but not in repo)
 check_untracked() {
-    echo -e "${BOLD}${CYAN}=== Untracked Configs (on system, not in repo) ===${NC}"
+    echo -e "${BOLD}${CYAN}=== Unmanaged Local Configs (informational; review before tracking) ===${NC}"
     local found=0
     
     for item in "$CONFIG_DIR/"*; do
@@ -125,7 +107,7 @@ check_untracked() {
         # Skip if already a symlink pointing to our repo
         if [ -L "$item" ]; then
             local link_target=$(readlink -f "$item" 2>/dev/null || echo "")
-            if [[ "$link_target" == "$DOTFILES_DIR"* ]]; then
+            if [[ "$link_target" == "$DOTFILES_DIR/"* ]]; then
                 continue
             fi
         fi
@@ -184,7 +166,7 @@ remove_config() {
     # Remove symlink if it exists and points to our repo
     if [ -L "$system_path" ]; then
         local link_target=$(readlink -f "$system_path" 2>/dev/null || echo "")
-        if [[ "$link_target" == "$DOTFILES_DIR"* ]]; then
+        if [[ "$link_target" == "$DOTFILES_DIR/"* ]]; then
             rm "$system_path"
             echo -e "${YELLOW}Removed symlink: $system_path${NC}"
         fi
@@ -214,6 +196,12 @@ fix_symlinks() {
             ln -s "$item" "$target"
             echo -e "  ${GREEN}✓${NC} Fixed: $name (backup at $backup)"
             fixed=1
+        elif [ -L "$target" ]; then
+            if [ ! -e "$target" ] || [ "$(readlink -f "$target")" != "$(readlink -f "$item")" ]; then
+                ln -sfnT "$item" "$target"
+                echo -e "  ${GREEN}✓${NC} Corrected: $name"
+                fixed=1
+            fi
         elif [ ! -e "$target" ]; then
             ln -s "$item" "$target"
             echo -e "  ${GREEN}✓${NC} Created: $name"
@@ -229,10 +217,7 @@ fix_symlinks() {
 
 # Interactive sync mode
 interactive_sync() {
-    print_header
-    
-    check_orphaned
-    check_untracked
+    status_check || true
     
     echo -e "${BOLD}${CYAN}=== Actions ===${NC}"
     echo "  1) Fix all symlinks (link repo configs to system)"
@@ -272,8 +257,8 @@ interactive_sync() {
 # Status check (non-interactive)
 status_check() {
     print_header
-    check_orphaned
     check_untracked
+    local issues=0
     
     echo -e "${BOLD}${CYAN}=== Symlink Status ===${NC}"
     for item in "$DOTFILES_DIR/config/"*; do
@@ -283,15 +268,22 @@ status_check() {
 
         is_ignored "$name" && continue
         
-        if [ -L "$target" ]; then
+        if [ -L "$target" ] && [ -e "$target" ] &&
+            [ "$(readlink -f "$target")" = "$(readlink -f "$item")" ]; then
             echo -e "  ${GREEN}✓${NC} $name"
+        elif [ -L "$target" ]; then
+            echo -e "  ${RED}✗${NC} $name (broken or wrong symlink target)"
+            issues=1
         elif [ -e "$target" ]; then
             echo -e "  ${YELLOW}⚠${NC} $name (not symlinked)"
+            issues=1
         else
             echo -e "  ${RED}✗${NC} $name (missing)"
+            issues=1
         fi
     done
     echo ""
+    return "$issues"
 }
 
 show_help() {

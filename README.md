@@ -126,6 +126,11 @@ Use `sync.sh` to manage configs beyond the core set:
 ./sync.sh interactive    # Interactive menu
 ```
 
+`sync.sh status` verifies each managed link's resolved destination and exits 1
+for missing, broken, incorrect, or non-symlink paths. `sync.sh fix` repairs links,
+backing up ordinary files/directories first. Unmanaged local configs are
+informational; private application state and environment files are excluded.
+
 ## Package Management
 
 Package lists live in `packages/` — one base list plus per-host extras:
@@ -143,6 +148,10 @@ Use `packages.sh` to compare declared packages against what's actually installed
 ./packages.sh export                   # Dump installed packages to a file
 ./packages.sh hosts                    # List available host profiles
 ```
+
+Status comparisons include all installed packages, including dependencies.
+Only explicitly installed packages appear in the informational undeclared list;
+this is not a removal list. Missing declarations make `packages.sh status` exit 1.
 
 ## System Updates
 

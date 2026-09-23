@@ -31,3 +31,10 @@ wimlib
 
 # Plex desktop client
 plex-desktop                         # [AUR]
+
+# Machine-managed services and update tooling
+firewalld
+cronie
+pacman-contrib                     # paccache.timer and pacdiff
+rebuild-detector                   # update postflight library checks
+sudo                              # machine-local privileged operations

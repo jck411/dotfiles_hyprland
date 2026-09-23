@@ -45,3 +45,14 @@ yay/
 
 # OS files
 .Trash-*
+
+# Private application state (also excluded by sync.sh)
+config/ai.opencode.desktop/
+config/opencode/
+config/obsidian/
+config/mozilla/
+config/google-chrome-for-testing/
+config/cloudflared/
+config/codex/
+config/immich/
+*.env
