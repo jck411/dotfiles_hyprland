@@ -288,7 +288,11 @@ tooltip label {
 
 /* Codex subscription allowance */
 #custom-codex {
-    padding: 2px 8px;
+    background-image: url("/home/jack/.config/waybar/icons/openai.svg");
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-position: 8px center;
+    padding: 2px 8px 2px 30px;
     margin: 4px 2px;
     color: @nord8;
 }

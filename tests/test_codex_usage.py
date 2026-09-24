@@ -13,7 +13,7 @@ class UsageTests(unittest.TestCase):
     def test_weekly_only_omits_missing_five_hour_allowance(self):
         state = {'windows': {'10080': {'remaining': 95, 'reset': 1000}}, 'updated': 100}
         result = usage.render(state, 200)
-        self.assertEqual(result['text'], 'Codex W: 95%')
+        self.assertEqual(result['text'], '95%')
         self.assertNotIn('5-hour', result['tooltip'])
         self.assertEqual(result['class'], 'normal')
 
@@ -21,13 +21,13 @@ class UsageTests(unittest.TestCase):
         state = {'windows': {'10080': {'remaining': 80, 'reset': 2000},
                              '300': {'remaining': 9, 'reset': 1000}}}
         result = usage.render(state, 200)
-        self.assertEqual(result['text'], 'Codex 5h: 9% · W: 80%')
+        self.assertEqual(result['text'], '5h: 9% · W: 80%')
         self.assertEqual(result['class'], 'critical')
 
     def test_failure_keeps_last_value_visibly_stale(self):
         state = {'windows': {'10080': {'remaining': 20, 'reset': 1000}}, 'updated': 100}
         result = usage.render(state, 200, 'Offline')
-        self.assertIn('W: 20%', result['text'])
+        self.assertIn('20%', result['text'])
         self.assertIn('STALE — Offline', result['tooltip'])
         self.assertEqual(result['class'], 'error')
         self.assertTrue(usage.render({}, 200, 'Offline')['text'].endswith('⟳'))
@@ -36,7 +36,7 @@ class UsageTests(unittest.TestCase):
         state = {'windows': {'300': {'remaining': 0, 'reset': 100}}}
         result = usage.render(state, 200)
         self.assertEqual(result['class'], 'error')
-        self.assertIn('5h: 0%', result['text'])
+        self.assertIn('0%', result['text'])
         self.assertEqual(usage.alerts(state['windows'], {}, 200)[1], [])
 
     def test_alert_once_per_threshold_and_reset(self):

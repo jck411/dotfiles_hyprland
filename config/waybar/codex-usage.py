@@ -124,7 +124,8 @@ def render(state, now, error=None):
     lines = []
     for duration in sorted(windows, key=int):
         label = {'300': '5h', '10080': 'W'}.get(duration, f'{duration}m')
-        pieces.append(f"{label}: {windows[duration]['remaining']:g}%")
+        prefix = f'{label}: ' if len(windows) > 1 else ''
+        pieces.append(f"{prefix}{windows[duration]['remaining']:g}%")
     if not pieces:
         pieces.append('—')
     for duration, window in windows.items():
@@ -141,7 +142,7 @@ def render(state, now, error=None):
     if stale:
         lines.append('STALE — ' + (error or 'reset time passed; awaiting updated allowance'))
     severity = max((level(w['remaining']) for w in windows.values()), default=0)
-    return {'text': 'Codex ' + ' · '.join(pieces) + (' ⟳' if stale else ''),
+    return {'text': ' · '.join(pieces) + (' ⟳' if stale else ''),
             'tooltip': '\n'.join(lines),
             'class': 'error' if stale else ['normal', 'warning', 'critical'][severity]}
 
