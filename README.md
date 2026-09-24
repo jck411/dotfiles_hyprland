@@ -131,6 +131,8 @@ for missing, broken, incorrect, or non-symlink paths. `sync.sh fix` repairs link
 backing up ordinary files/directories first. Unmanaged local configs are
 informational; private application state and environment files are excluded.
 
+Codex allowance display and troubleshooting: [ThinkPad runbook](../machine-thinkpad-p16s/docs/codex-waybar.md).
+
 ## Package Management
 
 Package lists live in `packages/` — one base list plus per-host extras:

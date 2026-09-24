@@ -9,6 +9,7 @@ hyprland
 hypridle
 hyprlock
 waybar
+libnotify                         # desktop alerts, including Codex allowance
 rofi
 mako
 awww

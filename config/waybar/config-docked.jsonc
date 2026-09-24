@@ -16,6 +16,7 @@
 	],
 	"modules-right": [
 		"custom/openrouter",
+		"custom/codex",
 		"custom/bookmarks",
 		"custom/obsidian",
 		"pulseaudio",
@@ -142,6 +143,12 @@
 		"tooltip": true,
 		"tooltip-format": "New Obsidian Note",
 		"on-click": "~/.config/waybar/obsidian-note.sh"
+	},
+	"custom/codex": {
+		"exec": "~/.local/bin/uv run --quiet --offline --no-project python ~/.config/waybar/codex-usage.py",
+		"return-type": "json",
+		"interval": 120,
+		"on-click": "xdg-open https://chatgpt.com/codex/settings/usage"
 	},
 	"custom/openrouter": {
 		"exec": "~/.config/waybar/openrouter.sh",

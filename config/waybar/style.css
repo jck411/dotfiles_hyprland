@@ -286,3 +286,12 @@ tooltip label {
     background-image: url("/home/jack/.config/waybar/icons/mcp-white.svg");
 }
 
+/* Codex subscription allowance */
+#custom-codex {
+    padding: 2px 8px;
+    margin: 4px 2px;
+    color: @nord8;
+}
+#custom-codex.warning { color: @nord13; }
+#custom-codex.critical { color: @nord11; }
+#custom-codex.error { color: @nord3; }
