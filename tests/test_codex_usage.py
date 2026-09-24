@@ -1,6 +1,5 @@
 """Quota mapping, stale display and alert deduplication regressions."""
 import importlib.util
-from datetime import datetime, timedelta
 from pathlib import Path
 import unittest
 
@@ -59,70 +58,34 @@ class UsageTests(unittest.TestCase):
     def test_threshold_boundaries(self):
         self.assertEqual([usage.level(n) for n in (25, 24, 10, 9)], [0, 1, 1, 2])
 
-    def test_daily_usage_survives_refreshes_and_restart(self):
-        now = datetime(2026, 9, 23, 12).timestamp()
-        windows = {'10080': {'remaining': 80, 'reset': now + 3600}}
-        daily = usage.daily_usage(windows, None, now)
-        self.assertEqual(daily['used'], 0)
-        windows['10080']['remaining'] = 65
-        daily = usage.daily_usage(windows, daily, now + 60)
-        self.assertEqual(daily['used'], 15)
-        # A restarted widget reads the same persisted state and quota.
-        self.assertEqual(usage.daily_usage(windows, daily, now + 120), daily)
-        self.assertEqual(daily['started'], now)
+    def test_per_day_allowance_uses_fractional_days(self):
+        for remaining, seconds_left, expected in ((70, 5 * 86400, '14.0'),
+                                                   (35, 2.5 * 86400, '14.0'),
+                                                   (10, 0.5 * 86400, '20.0')):
+            with self.subTest(remaining=remaining, seconds_left=seconds_left):
+                state = {'windows': {'10080': {'remaining': remaining,
+                                               'reset': 200 + seconds_left}}}
+                result = usage.render(state, 200)
+                self.assertIn(f'Available: {expected}%/day', result['tooltip'])
+                self.assertEqual(result['text'], f'{remaining}%')
 
-    def test_daily_usage_starts_over_on_local_calendar_day(self):
-        start = datetime(2026, 9, 23, 23, 55)
-        now = start.timestamp()
-        windows = {'10080': {'remaining': 80, 'reset': now + 86400}}
-        daily = usage.daily_usage(windows, None, now)
-        windows['10080']['remaining'] = 60
-        later = (start + timedelta(minutes=10)).timestamp()
-        daily = usage.daily_usage(windows, daily, later)
-        self.assertEqual(daily['used'], 0)
-        self.assertEqual(daily['date'], '2026-09-24')
-        self.assertEqual(daily['started'], later)
+    def test_per_day_line_red_only_below_fourteen(self):
+        for remaining, red in ((0, True), (65, True), (70, False), (75, False)):
+            with self.subTest(remaining=remaining):
+                state = {'windows': {'10080': {'remaining': remaining,
+                                               'reset': 200 + 5 * 86400}}}
+                result = usage.render(state, 200)
+                self.assertEqual('foreground="#BF616A"' in result['tooltip'], red)
 
-    def test_daily_usage_preserves_observed_use_across_weekly_reset(self):
-        now = datetime(2026, 9, 23, 12).timestamp()
-        windows = {'10080': {'remaining': 30, 'reset': now + 120}}
-        daily = usage.daily_usage(windows, None, now)
-        windows['10080']['remaining'] = 20
-        daily = usage.daily_usage(windows, daily, now + 60)
-        windows['10080'] = {'remaining': 97, 'reset': now + 604800}
-        daily = usage.daily_usage(windows, daily, now + 180)
-        self.assertEqual(daily['used'], 13)
-
-    def test_missing_or_expired_weekly_data_does_not_change_daily_usage(self):
-        now = datetime(2026, 9, 23, 12).timestamp()
-        windows = {'10080': {'remaining': 80, 'reset': now + 60}}
-        daily = usage.daily_usage(windows, None, now)
-        self.assertEqual(usage.daily_usage({}, daily, now + 30), daily)
-        self.assertEqual(usage.daily_usage(windows, daily, now + 120), daily)
-        self.assertIsNone(usage.daily_usage({}, None, now))
-
-    def test_daily_tooltip_red_only_above_target(self):
-        now = datetime(2026, 9, 23, 12).timestamp()
-        windows = {'10080': {'remaining': 80, 'reset': now + 3600}}
-        daily = usage.daily_usage(windows, None, now)
-        state = {'windows': windows, 'daily': daily}
-        for used in (0, 14, 15):
-            daily['used'] = used
-            result = usage.render(state, now)
-            self.assertIn(f"Today's percent used: {used}% (target 14%)", result['tooltip'])
-            self.assertEqual('foreground="#BF616A"' in result['tooltip'], used > 14)
-            self.assertEqual(result['class'], 'normal')
-        self.assertIn("Today's percent used: 15%", usage.render(state, now, 'Offline')['tooltip'])
-        self.assertIn("Today's percent used: —", usage.render(state, now + 86400, 'Offline')['tooltip'])
-
-    def test_daily_usage_handles_quota_correction_without_double_counting(self):
-        now = datetime(2026, 9, 23, 12).timestamp()
-        windows = {'10080': {'remaining': 80, 'reset': now + 3600}}
-        daily = usage.daily_usage(windows, None, now)
-        for remaining, expected in ((70, 10), (75, 5), (70, 10)):
-            windows['10080']['remaining'] = remaining
-            daily = usage.daily_usage(windows, daily, now + 60)
-            self.assertEqual(daily['used'], expected)
+    def test_per_day_line_omitted_without_valid_weekly_allowance(self):
+        for windows, error in (({}, None),
+                               ({'300': {'remaining': 50, 'reset': 1000}}, None),
+                               ({'10080': {'remaining': 50, 'reset': 200}}, None),
+                               ({'10080': {'remaining': 50, 'reset': 100}}, None),
+                               ({'10080': {'remaining': 50, 'reset': 1000}}, 'Offline')):
+            with self.subTest(windows=windows, error=error):
+                result = usage.render({'windows': windows}, 200, error)
+                self.assertNotIn('%/day', result['tooltip'])
 
 
 if __name__ == '__main__':
