@@ -14,7 +14,6 @@ from datetime import datetime
 
 STATE_DIR = Path.home() / 'REPOS/machine-thinkpad-p16s/state'
 STATE_FILE = STATE_DIR / 'codex-usage.json'
-MIN_DAILY_ALLOWANCE = 14
 
 
 def codex_binary():
@@ -137,14 +136,6 @@ def render(state, now, error=None):
         countdown = f'{days}d {hours}h {minutes}m' if days else f'{hours}h {minutes}m'
         reset = datetime.fromtimestamp(window['reset']).astimezone().strftime('%a %b %d %H:%M')
         lines.append(f"{label}: {window['remaining']:g}% remaining\nResets: {countdown} ({reset})")
-    weekly = windows.get('10080')
-    if weekly and not stale:
-        days_left = (weekly['reset'] - now) / 86400
-        per_day = weekly['remaining'] / days_left
-        line = f'Available: {per_day:.1f}%/day'
-        if per_day < MIN_DAILY_ALLOWANCE:
-            line = f'<span foreground="#BF616A">{line}</span>'
-        lines.append(line)
     if state.get('updated'):
         lines.append('Updated: ' + datetime.fromtimestamp(
             state['updated']).astimezone().strftime('%a %H:%M'))

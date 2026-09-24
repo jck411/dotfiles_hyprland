@@ -58,35 +58,5 @@ class UsageTests(unittest.TestCase):
     def test_threshold_boundaries(self):
         self.assertEqual([usage.level(n) for n in (25, 24, 10, 9)], [0, 1, 1, 2])
 
-    def test_per_day_allowance_uses_fractional_days(self):
-        for remaining, seconds_left, expected in ((70, 5 * 86400, '14.0'),
-                                                   (35, 2.5 * 86400, '14.0'),
-                                                   (10, 0.5 * 86400, '20.0')):
-            with self.subTest(remaining=remaining, seconds_left=seconds_left):
-                state = {'windows': {'10080': {'remaining': remaining,
-                                               'reset': 200 + seconds_left}}}
-                result = usage.render(state, 200)
-                self.assertIn(f'Available: {expected}%/day', result['tooltip'])
-                self.assertEqual(result['text'], f'{remaining}%')
-
-    def test_per_day_line_red_only_below_fourteen(self):
-        for remaining, red in ((0, True), (65, True), (70, False), (75, False)):
-            with self.subTest(remaining=remaining):
-                state = {'windows': {'10080': {'remaining': remaining,
-                                               'reset': 200 + 5 * 86400}}}
-                result = usage.render(state, 200)
-                self.assertEqual('foreground="#BF616A"' in result['tooltip'], red)
-
-    def test_per_day_line_omitted_without_valid_weekly_allowance(self):
-        for windows, error in (({}, None),
-                               ({'300': {'remaining': 50, 'reset': 1000}}, None),
-                               ({'10080': {'remaining': 50, 'reset': 200}}, None),
-                               ({'10080': {'remaining': 50, 'reset': 100}}, None),
-                               ({'10080': {'remaining': 50, 'reset': 1000}}, 'Offline')):
-            with self.subTest(windows=windows, error=error):
-                result = usage.render({'windows': windows}, 200, error)
-                self.assertNotIn('%/day', result['tooltip'])
-
-
 if __name__ == '__main__':
     unittest.main()
