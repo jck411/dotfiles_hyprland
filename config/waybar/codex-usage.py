@@ -121,7 +121,7 @@ def render(state, now, error=None):
     expired = any(w['reset'] <= now for w in windows.values())
     stale = bool(error) or expired
     pieces = []
-    lines = ['Codex allowance remaining']
+    lines = []
     for duration in sorted(windows, key=int):
         label = {'300': '5h', '10080': 'W'}.get(duration, f'{duration}m')
         pieces.append(f"{label}: {windows[duration]['remaining']:g}%")
@@ -133,12 +133,11 @@ def render(state, now, error=None):
         days, minutes = divmod(minutes, 1440)
         hours, minutes = divmod(minutes, 60)
         countdown = f'{days}d {hours}h {minutes}m' if days else f'{hours}h {minutes}m'
-        reset = datetime.fromtimestamp(window['reset']).astimezone().strftime('%a %b %d, %H:%M %Z')
-        lines.append(f"{label}: {window['remaining']:g}% remaining · resets in {countdown}\n  {reset}")
+        reset = datetime.fromtimestamp(window['reset']).astimezone().strftime('%a %b %d %H:%M')
+        lines.append(f"{label}: {window['remaining']:g}% remaining\nResets: {countdown} ({reset})")
     if state.get('updated'):
-        lines.append('Last successful refresh: ' + datetime.fromtimestamp(
-            state['updated']).astimezone().strftime('%a %H:%M:%S %Z'))
-    lines.append('Snapshot at last refresh · left-click: refresh + usage page · right-click: refresh')
+        lines.append('Updated: ' + datetime.fromtimestamp(
+            state['updated']).astimezone().strftime('%a %H:%M'))
     if stale:
         lines.append('STALE — ' + (error or 'reset time passed; awaiting updated allowance'))
     severity = max((level(w['remaining']) for w in windows.values()), default=0)
