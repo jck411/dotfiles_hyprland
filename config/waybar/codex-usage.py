@@ -14,6 +14,7 @@ from datetime import datetime
 
 STATE_DIR = Path.home() / 'REPOS/machine-thinkpad-p16s/state'
 STATE_FILE = STATE_DIR / 'codex-usage.json'
+DAILY_TARGET = 14
 
 
 def codex_binary():
@@ -116,6 +117,28 @@ def alerts(windows, previous, now):
     return notified, pending
 
 
+def daily_usage(windows, previous, now):
+    """Measure weekly allowance consumed since today's first successful refresh."""
+    weekly = windows.get('10080')
+    if not weekly or weekly['reset'] <= now:
+        return previous
+    today = datetime.fromtimestamp(now).astimezone().date().isoformat()
+    previous = previous or {}
+    used = 0
+    started = now
+    if previous.get('date') == today:
+        started = previous['started']
+        used = previous['used']
+        if previous['reset'] == weekly['reset']:
+            used = max(0, used + previous['remaining'] - weekly['remaining'])
+        elif previous['reset'] <= now:
+            # Keep today's observed usage before the weekly reset, then add
+            # the new window's usage. Unobserved use before reset is unknown.
+            used += 100 - weekly['remaining']
+    return {'date': today, 'started': started, 'used': used,
+            'remaining': weekly['remaining'], 'reset': weekly['reset']}
+
+
 def render(state, now, error=None):
     windows = state.get('windows', {})
     expired = any(w['reset'] <= now for w in windows.values())
@@ -136,6 +159,17 @@ def render(state, now, error=None):
         countdown = f'{days}d {hours}h {minutes}m' if days else f'{hours}h {minutes}m'
         reset = datetime.fromtimestamp(window['reset']).astimezone().strftime('%a %b %d %H:%M')
         lines.append(f"{label}: {window['remaining']:g}% remaining\nResets: {countdown} ({reset})")
+    daily = state.get('daily') or {}
+    today = datetime.fromtimestamp(now).astimezone().date().isoformat()
+    if daily.get('date') == today:
+        line = f"Today's percent used: {daily['used']:g}% (target {DAILY_TARGET}%)"
+        if daily['used'] > DAILY_TARGET:
+            line = f'<span foreground="#BF616A">{line}</span>'
+        lines.append(line)
+        started = datetime.fromtimestamp(daily['started']).astimezone().strftime('%H:%M')
+        lines.append(f'Estimated from refreshes since {started}')
+    else:
+        lines.append(f"Today's percent used: — (target {DAILY_TARGET}%)")
     if state.get('updated'):
         lines.append('Updated: ' + datetime.fromtimestamp(
             state['updated']).astimezone().strftime('%a %H:%M'))
@@ -161,7 +195,9 @@ def main():
             windows = fetch_limits()
             now = time.time()
             notified, pending = alerts(windows, state.get('notified', {}), now)
-            state = {'windows': windows, 'updated': now, 'notified': notified}
+            daily = daily_usage(windows, state.get('daily'), now)
+            state = {'windows': windows, 'updated': now, 'notified': notified,
+                     'daily': daily}
             temporary = STATE_FILE.with_suffix('.tmp')
             temporary.write_text(json.dumps(state))
             temporary.chmod(0o600)
