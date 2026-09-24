@@ -235,67 +235,38 @@ tooltip label {
     color: @nord8;
 }
 
-/* OpenRouter credit balance */
-#custom-openrouter {
-    padding: 2px 8px;
+/* Usage widgets share icon size, spacing, and status colors. */
+#custom-openrouter,
+#custom-codex {
+    padding: 2px 8px 2px 20px;
     margin: 4px 2px;
     color: @nord8;
     min-width: 16px;
     min-height: 16px;
-    background-image: url("/home/jack/.config/waybar/icons/openrouter.svg");
     background-size: 14px 14px;
     background-repeat: no-repeat;
     background-position: left center;
-    padding-left: 20px;
 }
 
-#custom-openrouter.warning {
+#custom-openrouter {
+    background-image: url("/home/jack/.config/waybar/icons/openrouter.svg");
+}
+
+#custom-codex {
+    background-image: url("/home/jack/.config/waybar/icons/openai.svg");
+}
+
+#custom-openrouter.warning,
+#custom-codex.warning {
     color: @nord13;
 }
 
-#custom-openrouter.critical {
+#custom-openrouter.critical,
+#custom-codex.critical {
     color: @nord11;
 }
 
-#custom-openrouter.error {
+#custom-openrouter.error,
+#custom-codex.error {
     color: @nord3;
 }
-
-/* Service toggle widgets (SVG icons) */
-#custom-mcp {
-    padding: 2px 8px;
-    margin: 4px 2px;
-    min-width: 16px;
-    min-height: 16px;
-    background-size: 16px 16px;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-/* Running state - green icons */
-#custom-mcp.running {
-    background-image: url("/home/jack/.config/waybar/icons/mcp-green.svg");
-}
-
-/* Stopped state - white icons, dimmed */
-#custom-mcp.stopped {
-    opacity: 0.7;
-}
-
-#custom-mcp.stopped {
-    background-image: url("/home/jack/.config/waybar/icons/mcp-white.svg");
-}
-
-/* Codex subscription allowance */
-#custom-codex {
-    background-image: url("/home/jack/.config/waybar/icons/openai.svg");
-    background-size: 16px 16px;
-    background-repeat: no-repeat;
-    background-position: 8px center;
-    padding: 2px 8px 2px 30px;
-    margin: 4px 2px;
-    color: @nord8;
-}
-#custom-codex.warning { color: @nord13; }
-#custom-codex.critical { color: @nord11; }
-#custom-codex.error { color: @nord3; }
