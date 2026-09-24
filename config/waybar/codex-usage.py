@@ -122,10 +122,11 @@ def render(state, now, error=None):
     stale = bool(error) or expired
     pieces = []
     lines = ['Codex allowance remaining']
-    for duration, label in [('300', '5h'), ('10080', 'W')]:
-        window = windows.get(duration)
-        value = f"{window['remaining']:g}%" if window else '—'
-        pieces.append(f'{label}: {value}')
+    for duration in sorted(windows, key=int):
+        label = {'300': '5h', '10080': 'W'}.get(duration, f'{duration}m')
+        pieces.append(f"{label}: {windows[duration]['remaining']:g}%")
+    if not pieces:
+        pieces.append('—')
     for duration, window in windows.items():
         label = {'300': '5-hour', '10080': 'Weekly'}.get(duration, f'{duration}-minute')
         minutes = max(0, math.ceil((window['reset'] - now) / 60))
@@ -134,12 +135,10 @@ def render(state, now, error=None):
         countdown = f'{days}d {hours}h {minutes}m' if days else f'{hours}h {minutes}m'
         reset = datetime.fromtimestamp(window['reset']).astimezone().strftime('%a %b %d, %H:%M %Z')
         lines.append(f"{label}: {window['remaining']:g}% remaining · resets in {countdown}\n  {reset}")
-    for duration, label in [('300', '5-hour'), ('10080', 'Weekly')]:
-        if duration not in windows:
-            lines.append(f'{label}: not reported by OpenAI')
     if state.get('updated'):
         lines.append('Last successful refresh: ' + datetime.fromtimestamp(
             state['updated']).astimezone().strftime('%a %H:%M:%S %Z'))
+    lines.append('Snapshot at last refresh · left-click: refresh + usage page · right-click: refresh')
     if stale:
         lines.append('STALE — ' + (error or 'reset time passed; awaiting updated allowance'))
     severity = max((level(w['remaining']) for w in windows.values()), default=0)
@@ -158,30 +157,28 @@ def main():
             state = {}
         error = None
         now = time.time()
-        # Multiple outputs may run the module simultaneously. Share the latest result.
-        if now - state.get('updated', 0) >= 60:
-            try:
-                windows = fetch_limits()
-                now = time.time()
-                notified, pending = alerts(windows, state.get('notified', {}), now)
-                state = {'windows': windows, 'updated': now, 'notified': notified}
-                temporary = STATE_FILE.with_suffix('.tmp')
-                temporary.write_text(json.dumps(state))
-                temporary.chmod(0o600)
-                temporary.replace(STATE_FILE)
-                for severity, message in pending:
-                    try:
-                        subprocess.run(['notify-send', '-a', 'Codex usage', '-u',
-                                        'critical' if severity == 2 else 'normal',
-                                        'Codex allowance running low', message],
-                                       timeout=5, check=False, stdout=subprocess.DEVNULL,
-                                       stderr=subprocess.DEVNULL)
-                    except (OSError, subprocess.TimeoutExpired):
-                        pass
-            except RuntimeError as exc:
-                error = str(exc)
-            except (OSError, ValueError, KeyError, TypeError):
-                error = 'Unable to read Codex usage; check Codex sign-in and local state'
+        try:
+            windows = fetch_limits()
+            now = time.time()
+            notified, pending = alerts(windows, state.get('notified', {}), now)
+            state = {'windows': windows, 'updated': now, 'notified': notified}
+            temporary = STATE_FILE.with_suffix('.tmp')
+            temporary.write_text(json.dumps(state))
+            temporary.chmod(0o600)
+            temporary.replace(STATE_FILE)
+            for severity, message in pending:
+                try:
+                    subprocess.run(['notify-send', '-a', 'Codex usage', '-u',
+                                    'critical' if severity == 2 else 'normal',
+                                    'Codex allowance running low', message],
+                                   timeout=5, check=False, stdout=subprocess.DEVNULL,
+                                   stderr=subprocess.DEVNULL)
+                except (OSError, subprocess.TimeoutExpired):
+                    pass
+        except RuntimeError as exc:
+            error = str(exc)
+        except (OSError, ValueError, KeyError, TypeError):
+            error = 'Unable to read Codex usage; check Codex sign-in and local state'
         print(json.dumps(render(state, now, error)))
 
 

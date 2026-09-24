@@ -147,8 +147,11 @@
 	"custom/codex": {
 		"exec": "~/.local/bin/uv run --quiet --offline --no-project python ~/.config/waybar/codex-usage.py",
 		"return-type": "json",
-		"interval": 120,
-		"on-click": "xdg-open https://chatgpt.com/codex/settings/usage"
+		"interval": "once",
+		"signal": 10,
+		"exec-on-event": false,
+		"on-click": "pkill -x -RTMIN+10 waybar; xdg-open https://chatgpt.com/codex/settings/usage",
+		"on-click-right": "pkill -x -RTMIN+10 waybar"
 	},
 	"custom/openrouter": {
 		"exec": "~/.config/waybar/openrouter.sh",

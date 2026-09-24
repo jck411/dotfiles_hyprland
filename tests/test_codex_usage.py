@@ -10,11 +10,11 @@ spec.loader.exec_module(usage)
 
 
 class UsageTests(unittest.TestCase):
-    def test_weekly_only_does_not_invent_five_hour_allowance(self):
+    def test_weekly_only_omits_missing_five_hour_allowance(self):
         state = {'windows': {'10080': {'remaining': 95, 'reset': 1000}}, 'updated': 100}
         result = usage.render(state, 200)
-        self.assertEqual(result['text'], 'Codex 5h: — · W: 95%')
-        self.assertIn('5-hour: not reported', result['tooltip'])
+        self.assertEqual(result['text'], 'Codex W: 95%')
+        self.assertNotIn('5-hour', result['tooltip'])
         self.assertEqual(result['class'], 'normal')
 
     def test_both_windows_and_severity(self):
