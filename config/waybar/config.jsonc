@@ -176,7 +176,8 @@
 		"return-type": "json",
 		"interval": "once",
 		"signal": 9,
-		"on-click": "pkill -RTMIN+9 waybar",
-		"on-click-right": "brave --app=https://openrouter.ai/logs --remote-debugging-port=9222 --force-dark-mode --disable-session-restore &"
+		"exec-on-event": false,
+		"on-click": "pkill -x -RTMIN+9 waybar; brave --app=https://openrouter.ai/logs --remote-debugging-port=9222 --force-dark-mode --disable-session-restore &",
+		"on-click-right": "pkill -x -RTMIN+9 waybar"
 	}
 }

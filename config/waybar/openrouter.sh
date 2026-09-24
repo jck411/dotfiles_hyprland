@@ -1,6 +1,6 @@
 #!/bin/bash
 # OpenRouter waybar module — shows balance, delta since last check, and activity breakdown in tooltip
-# No polling — triggered by signal only (pkill -RTMIN+9 waybar)
+# No polling — triggered by signal only (pkill -x -RTMIN+9 waybar)
 
 ENV_FILE="$HOME/REPOS/machine-thinkpad-p16s/secrets/.env"
 STATE_FILE="$HOME/REPOS/machine-thinkpad-p16s/state/openrouter-usage"
