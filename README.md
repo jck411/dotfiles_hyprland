@@ -50,7 +50,6 @@ Repository-wide agent instructions live in the root [AGENTS.md](AGENTS.md).
 | `brave-flags.conf` | Brave browser Wayland flags |
 | `chrome-flags.conf` | Google Chrome Wayland flags |
 | `code-flags.conf` | VS Code Wayland flags |
-| `cursor-flags.conf` | Cursor editor Wayland flags |
 | `electron-flags.conf` | General Electron app flags |
 | `power-settings.conf` | Power management settings |
 

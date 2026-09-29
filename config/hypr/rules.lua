@@ -43,7 +43,7 @@ hl.window_rule({
     opacity = "0.90 0.85",
 })
 
-for _, class in ipairs({ "brave-browser", "code-insiders", "cursor" }) do
+for _, class in ipairs({ "brave-browser", "code-insiders" }) do
     hl.window_rule({
         name = class .. "-opaque",
         match = { class = "^(" .. class .. ")$" },

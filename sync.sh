@@ -23,7 +23,6 @@ IGNORE_LIST=(
     # Large app data / caches
     "BraveSoftware"
     "Code - Insiders"
-    "Cursor"
     "Electron"
     "Hermes"
     "ai.opencode.desktop"
@@ -297,7 +296,7 @@ show_help() {
     echo "Examples:"
     echo "  ./sync.sh                    # Show status"
     echo "  ./sync.sh fix                # Fix all symlinks"
-    echo "  ./sync.sh add cursor-flags.conf"
+    echo "  ./sync.sh add code-flags.conf"
     echo "  ./sync.sh remove old-config"
 }
 

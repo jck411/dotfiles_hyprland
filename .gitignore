@@ -7,10 +7,9 @@
 # Host profile symlink (machine-specific, created by install.sh)
 config/hypr/host.lua
 
-# Don't track Brave/Code/Cursor - these are app data, not configs
+# Don't track application data
 BraveSoftware/
 Code - Insiders/
-Cursor/
 Electron/
 TelegramDesktop/
 Hermes/

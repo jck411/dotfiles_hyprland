@@ -41,7 +41,6 @@ gvfs
 # =============================================================================
 mousepad
 visual-studio-code-insiders-bin    # [AUR]
-cursor-bin                         # [AUR]
 nano
 nano-syntax-highlighting
 
@@ -56,7 +55,7 @@ firefox
 # MESSAGING
 # =============================================================================
 telegram-desktop                   # official Arch package
-hermes-agent-desktop               # [AUR] Hermes Desktop; remote VM connection
+hermes-agent-desktop               # [AUR] installed here; updates owned by PROXMOX/docs/hermes.md
 
 # =============================================================================
 # MEDIA
