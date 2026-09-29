@@ -57,7 +57,6 @@ firefox
 # =============================================================================
 telegram-desktop                   # official Arch package
 hermes-agent-desktop               # [AUR] Hermes Desktop; remote VM connection
-zoom                               # [AUR] official Zoom Workplace binaries
 
 # =============================================================================
 # MEDIA
