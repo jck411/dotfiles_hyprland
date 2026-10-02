@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Hermes
+GenericName=AI Agent Client
+Comment=Hermes Agent desktop with automatic home LAN or Cloudflare connection
+Exec=/home/jack/.config/scripts/hermes-desktop-auto %U
+Terminal=false
+Type=Application
+Icon=hermes
+StartupWMClass=Hermes
+Categories=Development;
+Keywords=AI;Agent;Chat;Assistant;
+MimeType=x-scheme-handler/hermes;

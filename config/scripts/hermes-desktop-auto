@@ -1,0 +1,55 @@
+#!/bin/bash
+set -euo pipefail
+
+# Pick the VM's LAN SSH connection when it answers; otherwise use its saved
+# Cloudflare gateway. Desktop reads these files only when it starts.
+if pgrep -u "$UID" -f '^/usr/lib/electron42/electron .* /usr/lib/hermes-agent-desktop/app.asar$' >/dev/null; then
+    exec /usr/bin/hermes-desktop "$@"
+fi
+
+umask 077
+config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/Hermes"
+registry="$config_dir/connections.json"
+legacy="$config_dir/connection.json"
+
+if [[ ! -r "$registry" || ! -r "$legacy" ]]; then
+    notify-send 'Hermes connections unavailable' 'Saved Hermes connection files are missing.'
+    exit 1
+fi
+
+if timeout 6 ssh -o BatchMode=yes -o ConnectionAttempts=1 -o ConnectTimeout=4 \
+    -o StrictHostKeyChecking=yes hermes@hermes-desktop-lan \
+    'test -x /home/hermes/.local/bin/hermes' \
+    </dev/null >/dev/null 2>&1; then
+    connection_id=home-hermes-ssh
+    connection_mode=ssh
+else
+    connection_id=home-hermes
+    connection_mode=remote
+fi
+
+if ! jq -e --arg id "$connection_id" \
+    '.connections | any(.id == $id and (.kind == "ssh" or .kind == "remote"))' \
+    "$registry" >/dev/null; then
+    notify-send 'Hermes connection unavailable' "Saved connection $connection_id is missing."
+    exit 1
+fi
+
+registry_tmp=$(mktemp "$config_dir/.connections.XXXXXXXX")
+legacy_tmp=$(mktemp "$config_dir/.connection.XXXXXXXX")
+trap 'rm -f "$registry_tmp" "$legacy_tmp"' EXIT
+
+jq --arg id "$connection_id" \
+    '.primary = $id | .lastUsed = $id | .launchMode = "primary"' \
+    "$registry" >"$registry_tmp"
+jq --slurpfile registry "$registry" --arg id "$connection_id" \
+    --arg mode "$connection_mode" \
+    '.mode = $mode | .remote = ($registry[0].connections[] |
+      select(.id == $id) | del(.id, .kind, .label) | .mode = $mode)' \
+    "$legacy" >"$legacy_tmp"
+
+mv -f "$registry_tmp" "$registry"
+mv -f "$legacy_tmp" "$legacy"
+trap - EXIT
+
+exec /usr/bin/hermes-desktop "$@"
