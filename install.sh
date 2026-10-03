@@ -81,7 +81,6 @@ create_symlink() {
         return 1
     fi
     
-    mkdir -p "$(dirname "$target")"
     backup_existing "$target"
     
     ln -s "$source" "$target"
@@ -171,11 +170,6 @@ install_all() {
     for file in "${CONFIG_FILES[@]}"; do
         install_config_file "$file"
     done
-
-    create_symlink "$DOTFILES_DIR/applications/hermes-desktop.desktop" \
-        "$HOME/.local/share/applications/hermes-desktop.desktop"
-    create_symlink "$DOTFILES_DIR/config/scripts/hermes-desktop-auto" \
-        "$HOME/.local/bin/hermes-desktop"
     
     echo ""
     echo -e "${BLUE}Installing shell configs...${NC}"
@@ -221,18 +215,12 @@ install_single() {
         host)
             select_host
             ;;
-        hermes-desktop)
-            create_symlink "$DOTFILES_DIR/applications/hermes-desktop.desktop" \
-                "$HOME/.local/share/applications/hermes-desktop.desktop"
-            create_symlink "$DOTFILES_DIR/config/scripts/hermes-desktop-auto" \
-                "$HOME/.local/bin/hermes-desktop"
-            ;;
         *)
             echo -e "${RED}Unknown component:${NC} $component"
             echo "Available: hypr, waybar, foot, foot-quake, swappy, rofi, mako, gtk-3.0, gtk-4.0,"
             echo "  Thunar, mpv, networkmanager-dmenu, nwg-displays, xdg-desktop-portal,"
             echo "  scripts, shell, host, brave-flags.conf, code-flags.conf,"
-            echo "  electron-flags.conf, power-settings.conf, hermes-desktop"
+            echo "  electron-flags.conf, power-settings.conf"
             exit 1
             ;;
     esac
@@ -290,7 +278,6 @@ show_help() {
     echo "Other:"
     echo "  shell            All shell configs (.bash_profile, .bashrc, .zshrc, .Xresources)"
     echo "  host             Select host profile (GPU, monitor, cursor size)"
-    echo "  hermes-desktop   Install the LAN-first Hermes launcher"
     echo ""
     echo "Examples:"
     echo "  ./install.sh              # Install everything (with host selection)"
